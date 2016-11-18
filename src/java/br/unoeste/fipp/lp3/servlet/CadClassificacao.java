@@ -1,10 +1,16 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.unoeste.fipp.lp3.servlet;
 
-import br.unoeste.fipp.lp3.dao.SolicitanteDAO;
-import br.unoeste.fipp.lp3.entities.Solicitante;
+import br.unoeste.fipp.lp3.dao.ClassificacaoDAO;
+import br.unoeste.fipp.lp3.entities.Classificacao;
 import br.unoeste.fipp.lp3.persistencia.DAOException;
 import br.unoeste.fipp.lp3.util.Erro;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Aluno
  */
-@WebServlet(name = "CadSolicitante", urlPatterns = {"/logado/cad_solicitante.do"})
-public class CadSolicitante extends HttpServlet {
+@WebServlet(name = "CadClassificacao", urlPatterns = {"/cad_classificacao.do"})
+public class CadClassificacao extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,15 +37,15 @@ public class CadSolicitante extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Erro erros = new Erro();
+       Erro erros = new Erro();
 
         if (request.getParameter("sel") != null) {
             try {
-                Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("email"));
+                Classificacao selecionado = ClassificacaoDAO.busca(request.getParameter("cod"));
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
-                    request.setAttribute("Solicitante", selecionado);
+                    request.setAttribute("Classificacao", selecionado);
                     request.setAttribute("alterando", true);
                 }
             } catch (Exception ex) {
@@ -50,29 +56,29 @@ public class CadSolicitante extends HttpServlet {
         boolean alterar = request.getParameter("bAlterar") != null;
         if (inserir || alterar) {
             
-            Solicitante solicitante = new Solicitante();
+            Classificacao classificacao = new Classificacao();
             
-            //to do
-            // efetuar tratamento de email
-            solicitante.setTheEmail(request.getParameter("txtEmail"));
-            solicitante.setNome(request.getParameter("txtNome"));
-            solicitante.setTelefone(request.getParameter("txtTelefone"));
-            solicitante.setObservacao(request.getParameter("txtObservacao"));
-
-            if (solicitante.getNome() == null || solicitante.getNome().isEmpty()) {
-                erros.add("Nome não informado.");
+            try {
+                classificacao.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
+            } catch (NumberFormatException ex) {
+                classificacao.setCod(-1);
+                erros.add("Código não informado corretamente.");
             }
-            if (solicitante.getTheEmail() == null || solicitante.getTheEmail().isEmpty()) {
-                erros.add("EmaiL não informado.");
+            
+            classificacao.setNome(request.getParameter("txtNome"));
+            classificacao.setAtiva(!"".equals(request.getParameter("chkAtiva")));
+          
+            if (classificacao.getNome() == null || classificacao.getNome().isEmpty()) {
+                erros.add("Nome não informado.");
             }
 
             //Validações
             if (erros.isEmpty()) {
                 try {
                     if (inserir) {
-                        SolicitanteDAO.insere(solicitante);
+                        ClassificacaoDAO.insere(classificacao);
                     } else {
-                        SolicitanteDAO.altera(solicitante);
+                        ClassificacaoDAO.altera(classificacao);
                     }
                 } catch (DAOException ex) {
                     erros.add(ex.getLocalizedMessage());
@@ -86,7 +92,7 @@ public class CadSolicitante extends HttpServlet {
 
         if (request.getParameter("del") != null) {
             try {
-                SolicitanteDAO.exclui(Integer.parseInt(
+                ClassificacaoDAO.exclui(Integer.parseInt(
                         request.getParameter("del")
                 ));
             } catch (DAOException ex) {
@@ -96,10 +102,10 @@ public class CadSolicitante extends HttpServlet {
             }
         }
 
-        List<Solicitante> cadastrados = SolicitanteDAO.lista();
+        List<Classificacao> cadastrados = ClassificacaoDAO.lista();
         request.setAttribute("erros", erros);
         request.setAttribute("cadastrados", cadastrados);
-        RequestDispatcher rd = request.getRequestDispatcher("/logado/cad_solicitante.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/logado/cad_classificacao.jsp");
         rd.forward(request, response);
     }
 
