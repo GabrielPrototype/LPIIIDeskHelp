@@ -1,7 +1,7 @@
 package br.unoeste.fipp.lp3.servlet;
 
-import br.unoeste.fipp.lp3.dao.UsuarioDAO;
-import br.unoeste.fipp.lp3.entidade.Usuario;
+import br.unoeste.fipp.lp3.dao.FuncionarioDAO;
+import br.unoeste.fipp.lp3.entities.Funcionario;
 import br.unoeste.fipp.lp3.util.Erro;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -27,6 +27,7 @@ public class Login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Erro errosDoProcessamento = new Erro();
@@ -40,11 +41,11 @@ public class Login extends HttpServlet {
                 errosDoProcessamento.add("Senha não informada.");
             }
             if (errosDoProcessamento.isEmpty()) {
-                Usuario user = UsuarioDAO.busca(login);
-                if (user == null) {
+                Funcionario funcionario = FuncionarioDAO.busca(login);
+                if (funcionario == null) {
                     errosDoProcessamento.add("Usuário não cadastrado.");
-                } else if (user.getSenha().equals(senha)) {
-                    request.getSession().setAttribute("usuarioLogado", user);
+                } else if (funcionario.getSenha().equals(senha)) {
+                    request.getSession().setAttribute("usuarioLogado", funcionario);
                     response.sendRedirect("logado/menu.jsp");
                     return;
                 } else {

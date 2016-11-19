@@ -17,7 +17,7 @@
             </ul>
         </c:if>
         <form method="post" action="cad_solicitante.do">
-            <label>E-Mail</label>
+            <label>Código</label>
             <input type="text" name="txtCodigo" 
                    ${alterando ? "readonly=\"readonly\"": ""}
                    value="${empty erros.mensagens ? usuario.codigo : param.txtCodigo}" size="5" maxlength="5"/>

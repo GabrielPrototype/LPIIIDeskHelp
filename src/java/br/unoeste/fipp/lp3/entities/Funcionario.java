@@ -33,6 +33,62 @@ public class Funcionario
 
     public Funcionario() {
     }
+
+    public void setCod(int cod) {
+        this.cod = cod;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDtContratacao(Date dtContratacao) {
+        this.dtContratacao = dtContratacao;
+    }
+
+    public void setDtDemissão(Date dtDemissão) {
+        this.dtDemissão = dtDemissão;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setTipo(char tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getCod() {
+        return cod;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Date getDtContratacao() {
+        return dtContratacao;
+    }
+
+    public Date getDtDemissão() {
+        return dtDemissão;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public char getTipo() {
+        return tipo;
+    }
     
     
 }

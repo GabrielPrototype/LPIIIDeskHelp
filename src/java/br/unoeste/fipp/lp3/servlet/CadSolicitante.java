@@ -49,9 +49,9 @@ public class CadSolicitante extends HttpServlet {
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
         if (inserir || alterar) {
-            
+
             Solicitante solicitante = new Solicitante();
-            
+
             //to do
             // efetuar tratamento de email
             solicitante.setTheEmail(request.getParameter("txtEmail"));
@@ -89,11 +89,11 @@ public class CadSolicitante extends HttpServlet {
                 SolicitanteDAO.exclui(Integer.parseInt(
                         request.getParameter("del")
                 ));
-            } catch (DAOException ex) {
-                erros.add(ex.getLocalizedMessage());
             } catch (NumberFormatException ex) {
                 erros.add("Parâmetro inválido");
-            }
+            } //catch (DAOException ex) {
+                //erros.add(ex.getLocalizedMessage());
+            //}
         }
 
         List<Solicitante> cadastrados = SolicitanteDAO.lista();

@@ -85,7 +85,7 @@ public class SolicitanteDAO {
 
     public static void insere(Solicitante sol)
             throws DAOException {
-        String sql = "insert into solicitante (sol_email, sol_nome, sol_telefone,sol_observacao) values (" + sol.getTheEmail() + "','" + sol.getNome()+ "','" + sol.getTelefone()+ "','" + sol.getObservacao()+ ");";
+        String sql = "insert into solicitante (sol_email, sol_nome, sol_telefone,sol_observacao) values (" + sol.getTheEmail() + "','" + sol.getNome() + "','" + sol.getTelefone() + "','" + sol.getObservacao() + ");";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
@@ -117,5 +117,6 @@ public class SolicitanteDAO {
 
     public static void exclui(int cod) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 }

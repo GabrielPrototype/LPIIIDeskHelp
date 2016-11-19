@@ -21,7 +21,7 @@ public class FuncionarioDAO {
         return null;
     }
 
-    public static void busca(String str) {
+    public static Funcionario busca(String str) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
