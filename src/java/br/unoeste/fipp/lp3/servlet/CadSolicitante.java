@@ -63,7 +63,7 @@ public class CadSolicitante extends HttpServlet {
                 erros.add("Nome não informado.");
             }
             if (solicitante.getTheEmail() == null || solicitante.getTheEmail().isEmpty()) {
-                erros.add("EmaiL não informado.");
+                erros.add("Email não informado.");
             }
 
             //Validações

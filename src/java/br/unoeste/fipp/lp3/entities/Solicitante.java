@@ -15,6 +15,17 @@ public class Solicitante {
     private String telefone;
     private String Observacao;
 
+    public Solicitante() {
+    }
+
+    public Solicitante(String theEmail, String nome, String telefone, String Observacao) {
+        this.theEmail = theEmail;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.Observacao = Observacao;
+    }
+    
+
     public String getTheEmail() {
         return theEmail;
     }
