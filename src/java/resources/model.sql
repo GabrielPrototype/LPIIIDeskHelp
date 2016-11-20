@@ -1,23 +1,3 @@
---
--- TOC entry 2199 (class 0 OID 0)
--- Dependencies: 1
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- TOC entry 189 (class 1259 OID 24732)
--- Name: Atividade; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE "Atividade" (
     ati_codigo integer NOT NULL,
     ati_descricao character varying(255) NOT NULL,
@@ -107,6 +87,24 @@ ALTER SEQUENCE "Classificacao_cla_codigo_seq" OWNED BY "Classificacao".cla_codig
 
 
 --
+-- TOC entry 187 (class 1259 OID 24724)
+-- Name: Funcionario; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "Funcionario" (
+    fun_codigo integer NOT NULL,
+    fun_nome character varying(70) NOT NULL,
+    fun_dtcontracao date NOT NULL,
+    fun_dtdemissao date,
+    fun_ativo boolean NOT NULL,
+    fun_senha character varying(15) NOT NULL,
+    fun_tipo character varying(1) NOT NULL
+);
+
+
+ALTER TABLE "Funcionario" OWNER TO postgres;
+
+--
 -- TOC entry 183 (class 1259 OID 24709)
 -- Name: Solicitante; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -160,24 +158,6 @@ ALTER SEQUENCE "Status_sta_codigo_seq" OWNED BY "Status".sta_codigo;
 
 
 --
--- TOC entry 187 (class 1259 OID 24724)
--- Name: funcionario; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE funcionario (
-    fun_codigo integer NOT NULL,
-    fun_nome character varying(70) NOT NULL,
-    fun_dtcontracao date NOT NULL,
-    fun_dtdemissao date,
-    fun_ativo boolean NOT NULL,
-    fun_senha character varying(15) NOT NULL,
-    fun_tipo character varying(1) NOT NULL
-);
-
-
-ALTER TABLE funcionario OWNER TO postgres;
-
---
 -- TOC entry 186 (class 1259 OID 24722)
 -- Name: funcionario_fun_codigo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -198,7 +178,7 @@ ALTER TABLE funcionario_fun_codigo_seq OWNER TO postgres;
 -- Name: funcionario_fun_codigo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE funcionario_fun_codigo_seq OWNED BY funcionario.fun_codigo;
+ALTER SEQUENCE funcionario_fun_codigo_seq OWNED BY "Funcionario".fun_codigo;
 
 
 --
@@ -218,19 +198,19 @@ ALTER TABLE ONLY "Classificacao" ALTER COLUMN cla_codigo SET DEFAULT nextval('"C
 
 
 --
+-- TOC entry 2049 (class 2604 OID 24727)
+-- Name: fun_codigo; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "Funcionario" ALTER COLUMN fun_codigo SET DEFAULT nextval('funcionario_fun_codigo_seq'::regclass);
+
+
+--
 -- TOC entry 2047 (class 2604 OID 24706)
 -- Name: sta_codigo; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY "Status" ALTER COLUMN sta_codigo SET DEFAULT nextval('"Status_sta_codigo_seq"'::regclass);
-
-
---
--- TOC entry 2049 (class 2604 OID 24727)
--- Name: fun_codigo; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY funcionario ALTER COLUMN fun_codigo SET DEFAULT nextval('funcionario_fun_codigo_seq'::regclass);
 
 
 --
