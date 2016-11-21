@@ -115,8 +115,18 @@ public class SolicitanteDAO {
         }
     }
 
-    public static void exclui(int cod) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
+   public static void exclui(String email)
+            throws DAOException {
+        String sql = "delete from solicitante where sol_email = ?";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, email);
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro excluindo registro.");
+        }
     }
 }
