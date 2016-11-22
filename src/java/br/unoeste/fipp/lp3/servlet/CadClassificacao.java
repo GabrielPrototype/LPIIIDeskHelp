@@ -45,7 +45,7 @@ public class CadClassificacao extends HttpServlet {
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
-                    request.setAttribute("Classificacao", selecionado);
+                    request.setAttribute("classificacao", selecionado);
                     request.setAttribute("alterando", true);
                 }
             } catch (Exception ex) {
