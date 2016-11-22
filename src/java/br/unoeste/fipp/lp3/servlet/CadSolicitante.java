@@ -6,6 +6,8 @@ import br.unoeste.fipp.lp3.persistencia.DAOException;
 import br.unoeste.fipp.lp3.util.Erro;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -86,16 +88,11 @@ public class CadSolicitante extends HttpServlet {
 
         if (request.getParameter("del") != null) {
             try {
-                SolicitanteDAO.exclui(Integer.parseInt(
-                        request.getParameter("del")
-                ));
-            } catch (NumberFormatException ex) {
-                erros.add("Parâmetro inválido");
-            } //catch (DAOException ex) {
-                //erros.add(ex.getLocalizedMessage());
-            //}
+                SolicitanteDAO.exclui(request.getParameter("del"));
+            } catch (DAOException ex) {
+                Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
+            } 
         }
-
         List<Solicitante> cadastrados = SolicitanteDAO.lista();
         request.setAttribute("erros", erros);
         request.setAttribute("cadastrados", cadastrados);

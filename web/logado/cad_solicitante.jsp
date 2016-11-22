@@ -4,8 +4,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="/cadastro/css/layout.css" rel="stylesheet" type="text/css"/>
-        <title>Cadastro de Usuário</title>
+        <link href="/LP3_2Bim_DeskHelp/css/layout.css" rel="stylesheet" type="text/css"/>
+        <title>Cadastro de Solicitante</title>
     </head>
     <body>
         <h1>Cadastro de Usuário</h1>
@@ -18,31 +18,18 @@
         </c:if>
         <form method="post" action="cad_solicitante.do">
             <label>E-Mail</label>
-            <input type="text" name="txtCodigo" 
+            <input type="text" name="txtEmail" 
                    ${alterando ? "readonly=\"readonly\"": ""}
-                   value="${empty erros.mensagens ? usuario.codigo : param.txtCodigo}" size="5" maxlength="5"/>
+                   value="${empty erros.mensagens ? solicitante.theEmail : param.txtEmail}" size="80" maxlength="100"/>
             <label>Nome</label>
             <input type="text" name="txtNome" 
-                   value="${empty erros.mensagens ? usuario.nome : param.txtNome}" size="80" maxlength="100"/>
-            <label>Login</label>
-            <input type="text" name="txtLogin" 
-                   value="${empty erros.mensagens ? usuario.login : param.txtLogin}" size="8" maxlength="6"/>
-            <label>Senha</label>
-            <input type="password" name="txtSenha" size="8" maxlength="6"/>
-            <label>Nível Acesso</label>
-
-
-            <select name="selAdmin">
-                <c:if test="${empty erros.mensagens}">
-                    <option value="false" ${usuario.admin ? "" : "selected=\"selected\""}>Normal</option>
-                    <option value="true" ${usuario.admin ? "selected=\"selected\"" : ""}>Administrador</option>
-                </c:if>
-                <c:if test="${not empty erros.mensagens}">
-                    <option value="false" ${param.selAdmin ? "" : "selected=\"selected\""}>Normal</option>
-                    <option value="true" ${param.selAdmin ? "selected=\"selected\"" : ""}>Administrador</option>
-                </c:if>
-            </select>
-
+                   value="${empty erros.mensagens ? solicitante.nome : param.txtNome}" size="80" maxlength="100"/>
+            <label>Telefone</label>
+            <input type="text" name="txtTelefone" 
+                   value="${empty erros.mensagens ? solicitante.telefone : param.txtTelefone}" size="80" maxlength="15"/>
+            <label>Observação</label>
+            <input type="text" name="txtTelefone" 
+                   value="${empty erros.mensagens ? solicitante.observacao : param.txtObservacao}" size="80" maxlength="40"/>
 
             <p>
                 <input type="submit" name="bInserir" value="Inserir"
@@ -57,23 +44,23 @@
             <h2>Usuários Cadastrados</h2>
             <table>
                 <tr>
-                    <th>Código</th>
+                    <th>E-mail</th>
                     <th>Nome</th>
-                    <th>Login</th>
-                    <th>Nível</th>
+                    <th>Telefone</th>
+                    <th>Observação</th>
                     <th colspan="2">-</th>
                 </tr>
-                <c:forEach var="user" items="${cadastrados}">
+                <c:forEach var="solic" items="${cadastrados}">
                     <tr>
-                        <td>${user.codigo}</td>
-                        <td>${user.nome}</td>
-                        <td>${user.login}</td>
-                        <td>${user.admin}</td>
+                        <td>${solic.theEmail}</td>
+                        <td>${solic.nome}</td>
+                        <td>${solic.telefone}</td>
+                        <td>${solic.observacao}</td>
                         <td>
-                            <a href="cad_usuario.do?sel=${user.codigo}">Selecionar</a>
+                            <a href="cad_solicitante.do?sel=${solic.theEmail}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_usuario.do?del=${user.codigo}">Excluir</a>
+                            <a href="cad_solicitante.do?del=${solic.theEmail}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>
