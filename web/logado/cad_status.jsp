@@ -27,12 +27,12 @@
             <label>Nível Acesso</label>
 
 
-            <input type="checkbox" name="chkAtiva" value="ativo"  
+            <input type="checkbox" name="chkAtiva"    
                 <c:if test="${empty erros.mensagens}">
-                    ${Status.ativo ? "checked=\"checked\"" : ""}
+                    ${status.ativo ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
                 </c:if>
                 <c:if test="${not empty erros.mensagens}">
-                    ${param.ativo ? "checked=\"checked\"" : ""}
+                    ${param.chkAtiva ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
                 </c:if>
             >  Ativo? <br>
 
