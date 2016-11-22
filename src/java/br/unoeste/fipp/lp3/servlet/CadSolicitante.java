@@ -41,7 +41,7 @@ public class CadSolicitante extends HttpServlet {
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
-                    request.setAttribute("Solicitante", selecionado);
+                    request.setAttribute("solicitante", selecionado);
                     request.setAttribute("alterando", true);
                 }
             } catch (Exception ex) {
