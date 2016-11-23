@@ -7,6 +7,7 @@ package br.unoeste.fipp.lp3.dao;
 
 import br.unoeste.fipp.lp3.entities.Funcionario;
 import br.unoeste.fipp.lp3.persistencia.Conexao;
+import br.unoeste.fipp.lp3.persistencia.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,15 +51,14 @@ public class FuncionarioDAO {
         try (Connection conn = Conexao.abre()) {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {
-                    if(rs.next())
-                    {
+                    if (rs.next()) {
                         return new Funcionario(rs.getInt("fun_codigo"),
-                                    rs.getString("fun_nome"),
-                                    rs.getDate("fun_dtcontratacao"),
-                                    rs.getDate("fun_dtdemissao"),
-                                    rs.getBoolean("fun_ativo"),
-                                    rs.getString("fun_senha"),
-                                    (char) rs.getByte("fun_tipo"));
+                                rs.getString("fun_nome"),
+                                rs.getDate("fun_dtcontratacao"),
+                                rs.getDate("fun_dtdemissao"),
+                                rs.getBoolean("fun_ativo"),
+                                rs.getString("fun_senha"),
+                                (char) rs.getByte("fun_tipo"));
                     }
                 }
             }
@@ -72,15 +72,14 @@ public class FuncionarioDAO {
         try (Connection conn = Conexao.abre()) {
             try (Statement st = conn.createStatement()) {
                 try (ResultSet rs = st.executeQuery(sql)) {
-                    if(rs.next())
-                    {
+                    if (rs.next()) {
                         return new Funcionario(rs.getInt("fun_codigo"),
-                                    rs.getString("fun_nome"),
-                                    rs.getDate("fun_dtcontratacao"),
-                                    rs.getDate("fun_dtdemissao"),
-                                    rs.getBoolean("fun_ativo"),
-                                    rs.getString("fun_senha"),
-                                    (char) rs.getByte("fun_tipo"));
+                                rs.getString("fun_nome"),
+                                rs.getDate("fun_dtcontratacao"),
+                                rs.getDate("fun_dtdemissao"),
+                                rs.getBoolean("fun_ativo"),
+                                rs.getString("fun_senha"),
+                                (char) rs.getByte("fun_tipo"));
                     }
                 }
             }
@@ -89,15 +88,51 @@ public class FuncionarioDAO {
         return null;
     }
 
-    public void insere() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void insere(Funcionario fun)
+            throws DAOException {
+        String sql = "insert into funcionario (fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo) values (" + fun.getNome() + "','" + fun.getDtContratacao() + "','" + fun.getDtDemissão() + "','" + fun.isAtivo() + "','" + fun.getSenha() + "','" + fun.getTipo() + ");";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (Statement st = conn.createStatement()) {
+                    st.executeUpdate(sql);
+                }
+            }
+        } catch (SQLException ex) {
+           throw new DAOException("Erro excluindo registro.");
+        }
     }
 
-    public void altera() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void altera(Funcionario fun)
+            throws DAOException {
+        String sql = "update funcionario set fun_nome=?,fun_dtcontratacao = ?, fun_dtdemissao = ?, fun_ativo = ?,fun_senha = ?,fun_tipo = ? where fun_cod = ?";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, fun.getNome());
+                    st.setDate(2, fun.getDtContratacao());
+                    st.setDate(3, fun.getDtDemissão());
+                    st.setBoolean(4, fun.isAtivo());
+                    st.setString(5, fun.getSenha());
+                    st.setString(6, "" + fun.getTipo());
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro alterando registro.");
+        }
     }
 
-    public void exclui() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void exclui(int cod) throws DAOException {
+        String sql = "delete from funcionarios where fun_codigo=?";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try(PreparedStatement st = conn.prepareStatement(sql)){
+                    st.setInt(1, cod);
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+           throw new DAOException("Erro alterando registro.");
+        }
     }
 }

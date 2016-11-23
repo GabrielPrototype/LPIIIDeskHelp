@@ -22,9 +22,9 @@ public class AtividadeDAO {
     public static List<Atividade> lista()
     {
         List<Atividade> temp= new ArrayList();
-        String sql="select ati_codigo,ati_descricao,ati_dtinicio,ati_dtfim,fun_codigo,sta_codigo,sol_email from atividade a"+
-                    "inner join funcionario f on a.fun_codigo=f.fun_codigo"+
-                    "inner join status st on st.sta_codigo=a.sta_codigo"+ 
+        String sql="select ati_codigo,ati_descricao,ati_dtinicio,ati_dtfim,fun_codigo,sta_codigo,sol_email from atividade a "+
+                    "inner join funcionario f on a.fun_codigo=f.fun_codigo "+
+                    "inner join status st on st.sta_codigo=a.sta_codigo "+ 
                     "inner join solicitacao s on s.sol_email=a.sol_email  ORDER BY ati_codigo;";
         try(Connection conn = Conexao.abre())
         {
