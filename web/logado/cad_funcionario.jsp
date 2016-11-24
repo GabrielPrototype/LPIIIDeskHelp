@@ -16,20 +16,38 @@
                     </c:forEach> 
             </ul>
         </c:if>
-        <form method="post" action="cad_classificacao.do">
+        <form method="post" action="cad_funcionario.do">
             <label>Código</label>
             <input type="text" name="txtCodigo" 
                    ${alterando ? "readonly=\"readonly\"": ""}
-                   value="${empty erros.mensagens ? classificacao.codigo : param.txtCodigo}" size="5" maxlength="5"/>
+                   value="${empty erros.mensagens ? funcionario.codigo : param.txtCodigo}" size="5" maxlength="5"/>
             <label>Nome</label>
             <input type="text" name="txtNome" 
-                   value="${empty erros.mensagens ? classificacao.nome : param.txtNome}" size="80" maxlength="100"/>
+                   value="${empty erros.mensagens ? funcionario.nome : param.txtNome}" size="80" maxlength="100"/>
+            <label>Data de Contratação</label>
+            <input type="text" name="txtDtContratacao" 
+                   value="${empty erros.mensagens ? funcionario.nome : param.DtContratacao}" size="80" maxlength="12"/>
+            <label>Data de Demissão</label>
+            <input type="text" name="txtDtDemissao" 
+                   value="${empty erros.mensagens ? funcionario.nome : param.txtDtDemissao}" size="80" maxlength="12"/>
+            <label>Senha</label>
+            <input type="password" name="txtSenha" size="8" maxlength="6"/>
             
+            <select name="selAdmin">
+                <c:if test="${empty erros.mensagens}">
+                    <option value="n" ${usuario.tipo == 'n' ? "" : "selected=\"selected\""}>Normal</option>
+                    <option value="a" ${usuario.tipo == 'a' ? "selected=\"selected\"" : ""}>Administrador</option>
+                </c:if>
+                <c:if test="${not empty erros.mensagens}">
+                    <option value="n" ${param.tipo == 'n' ? "" : "selected=\"selected\""}>Normal</option>
+                    <option value="a" ${param.tipo == 'a' ? "selected=\"selected\"" : ""}>Administrador</option>
+                </c:if>
+            </select>
             
             <label>Ativo</label>
             <input type="checkbox" name="chkAtiva"    
                 <c:if test="${empty erros.mensagens}">
-                    ${classificacao.ativa ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
+                    ${funcionario.ativo ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
                 </c:if>
                 <c:if test="${not empty erros.mensagens}">
                     ${param.chkAtiva ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
@@ -55,16 +73,16 @@
                     <th>Ativa</th>
                     <th colspan="2">-</th>
                 </tr>
-                <c:forEach var="classif" items="${cadastrados}">
+                <c:forEach var="func" items="${cadastrados}">
                     <tr>
-                        <td>${classif.codigo}</td>
-                        <td>${classif.nome}</td>
-                        <td>${classif.ativa}</td>
+                        <td>${func.codigo}</td>
+                        <td>${func.nome}</td>
+                        <td>${func.ativa}</td>
                         <td>
-                            <a href="cad_classificacao.do?sel=${classif.codigo}">Selecionar</a>
+                            <a href="cad_funcionario.do?sel=${func.codigo}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_classificacao.do?del=${classif.codigo}">Excluir</a>
+                            <a href="cad_funcionario.do?del=${func.codigo}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>
