@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Aluno
  */
-@WebServlet(name = "CadStatus", urlPatterns = {"/cad_status.do"})
+@WebServlet(name = "CadStatus", urlPatterns = {"/logado/cad_status.do"})
 public class CadStatus extends HttpServlet {
 
     /**
@@ -107,7 +107,7 @@ public class CadStatus extends HttpServlet {
         List<Status> cadastrados = StatusDAO.lista();
         request.setAttribute("erros", erros);
         request.setAttribute("cadastrados", cadastrados);
-        RequestDispatcher rd = request.getRequestDispatcher("/logado/cad_Status.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/logado/cad_status.jsp");
         rd.forward(request, response);
     }
 

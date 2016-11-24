@@ -16,7 +16,7 @@
                     </c:forEach> 
             </ul>
         </c:if>
-        <form method="post" action="cad_Status.do">
+        <form method="post" action="cad_status.do">
             <label>Código</label>
             <input type="text" name="txtCodigo" 
                    ${alterando ? "readonly=\"readonly\"": ""}
@@ -24,7 +24,7 @@
             <label>Nome</label>
             <input type="text" name="txtStatus" 
                    value="${empty erros.mensagens ? Status.status : param.txtNome}" size="80" maxlength="100"/>
-            <label>Nível Acesso</label>
+            <label>Ativo</label>
 
 
             <input type="checkbox" name="chkAtiva"    
@@ -61,10 +61,10 @@
                         <td>${classif.status}</td>
                         <td>${classif.ativo}</td>
                         <td>
-                            <a href="cad_Status.do?sel=${classif.cod}">Selecionar</a>
+                            <a href="cad_status.do?sel=${classif.cod}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_Status.do?del=${classif.cod}">Excluir</a>
+                            <a href="cad_status.do?del=${classif.cod}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>
