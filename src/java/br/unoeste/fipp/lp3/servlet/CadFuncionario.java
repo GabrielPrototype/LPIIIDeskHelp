@@ -112,13 +112,13 @@ public class CadFuncionario extends HttpServlet {
                 String auxdata[];
                 Calendar cal = Calendar.getInstance();
 
-                auxdata = dtContratacao.split("/-.");
+                auxdata = dtContratacao.split("\\/|-|\\.");
                 cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
                 cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
                 cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
                 funcionario.setDtContratacao((Date) cal.getTime());
 
-                auxdata = dtDemissao.split("/-.");
+                auxdata = dtDemissao.split("\\/|-|\\.");
                 cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
                 cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
                 cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
