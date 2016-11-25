@@ -79,11 +79,13 @@ public class ClassificacaoDAO {
 
     public static void insere(Classificacao clas)
             throws DAOException {
-        String sql = "insert into classificacao (cla_nome, cla_ativa) values (" + clas.getNome() + "','" + clas.isAtiva() + ");";
+        String sql = "insert into classificacao (cla_nome, cla_ativa) values (?,?)";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
-                try (Statement st = conn.createStatement()) {
-                    st.executeUpdate(sql);
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, clas.getNome());
+                    st.setBoolean(2, clas.isAtiva());
+                    st.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
