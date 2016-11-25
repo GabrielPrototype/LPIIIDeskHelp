@@ -90,15 +90,21 @@ public class FuncionarioDAO {
 
     public static void insere(Funcionario fun)
             throws DAOException {
-        String sql = "insert into funcionario (fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo) values (" + fun.getNome() + "','" + fun.getDtContratacao() + "','" + fun.getDtDemissão() + "','" + fun.isAtivo() + "','" + fun.getSenha() + "','" + fun.getTipo() + ");";
+        String sql = "insert into funcionario (fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo) values (?,?,?,?,?,?);";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
-                try (Statement st = conn.createStatement()) {
-                    st.executeUpdate(sql);
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, fun.getNome());
+                    st.setDate(2, fun.getDtContratacao());
+                    st.setDate(3, fun.getDtDemissão());
+                    st.setBoolean(4, fun.isAtivo());
+                    st.setString(5, fun.getSenha());
+                    st.setString(6, "" + fun.getTipo());
+                    st.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
-           throw new DAOException("Erro excluindo registro.");
+            throw new DAOException("Erro excluindo registro.");
         }
     }
 
@@ -126,13 +132,13 @@ public class FuncionarioDAO {
         String sql = "delete from funcionarios where fun_codigo=?";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
-                try(PreparedStatement st = conn.prepareStatement(sql)){
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setInt(1, cod);
                     st.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
-           throw new DAOException("Erro alterando registro.");
+            throw new DAOException("Erro alterando registro.");
         }
     }
 }
