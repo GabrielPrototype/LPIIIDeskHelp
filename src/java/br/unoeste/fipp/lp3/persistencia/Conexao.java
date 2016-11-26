@@ -11,9 +11,9 @@ import java.util.logging.Logger;
  */
 public class Conexao {
 
-    private static final String URL = "jdbc:postgresql://127.0.0.1:5432/lp3AT2";
+    private static final String URL = "jdbc:postgresql://127.0.0.1:5432/LP3AT2";
     private static final String USUARIO = "postgres";
-    private static final String SENHA = "postgres123";
+    private static final String SENHA = "postgres1234";
 
     public static Connection abre() {
         try {

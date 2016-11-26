@@ -20,7 +20,7 @@
             <label>Código</label>
             <input type="text" name="txtCodigo" 
                    ${alterando ? "readonly=\"readonly\"": ""}
-                   value="${empty erros.mensagens ? classificacao.codigo : param.txtCodigo}" size="5" maxlength="5"/>
+                   value="${empty erros.mensagens ? classificacao.cod : param.txtCodigo}" size="5" maxlength="5"/>
             <label>Nome</label>
             <input type="text" name="txtNome" 
                    value="${empty erros.mensagens ? classificacao.nome : param.txtNome}" size="80" maxlength="100"/>
@@ -57,14 +57,14 @@
                 </tr>
                 <c:forEach var="classif" items="${cadastrados}">
                     <tr>
-                        <td>${classif.codigo}</td>
+                        <td>${classif.cod}</td>
                         <td>${classif.nome}</td>
                         <td>${classif.ativa}</td>
                         <td>
-                            <a href="cad_classificacao.do?sel=${classif.codigo}">Selecionar</a>
+                            <a href="cad_classificacao.do?sel=${classif.cod}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_classificacao.do?del=${classif.codigo}">Excluir</a>
+                            <a href="cad_classificacao.do?del=${classif.cod}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>
