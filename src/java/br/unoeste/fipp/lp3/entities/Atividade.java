@@ -22,7 +22,7 @@ public class Atividade {
     private Funcionario funcionario;
     private Status status;
     private Solicitante solicitante;
-    private ArrayList<Classificacao> classificacao;
+    private ArrayList<Classificacao> classificacoes;
 
     public Atividade() {
     }
@@ -94,12 +94,15 @@ public class Atividade {
         this.solicitante = solicitante;
     }
 
-    public Classificacao getClassificacao() {
-        return classificacao;
+    public ArrayList<Classificacao> getClassificacoes() {
+        return classificacoes;
     }
 
-    public void setClassificacao(Classificacao classificacao) {
-        this.classificacao = classificacao;
+    public void setClassificacoes(ArrayList<Classificacao> classificacoes) {
+        this.classificacoes = classificacoes;
+    }
+
+    
     }
     
     
