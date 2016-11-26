@@ -124,6 +124,7 @@ public class AtividadeDAO {
         //Classificacao cla = new Classificacao();
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
+
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, ativ.getDescricao());
                     st.setDate(2, ativ.getDtInicio());
@@ -133,8 +134,7 @@ public class AtividadeDAO {
                     st.setString(6, ativ.getSolicitante().getTheEmail());
                     st.executeUpdate();
                 }
-                try(PreparedStatement st = conn.prepareStatement(sql1))
-                {
+                try (PreparedStatement st = conn.prepareStatement(sql1)) {
                     st.setInt(1, ativ.getCodigo());
                     st.setInt(2, ativ.getClassificacao().getCod());
                     st.executeUpdate();
@@ -145,8 +145,30 @@ public class AtividadeDAO {
         }
     }
 
-    public void altera() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void altera(Atividade ativ)
+            throws DAOException {
+        String sql = "update atividade set ati_descricao = ?, ati_dtinicio = ?, ati_dtfim=?,fun_codigo=?,sta_codigo=?,sol_email=? where ati_codigo = ?;";
+        String sql1 = "update atividadeclassificacao ati_cod=?,cla_cod=? where ati_cod =?;";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, ativ.getDescricao());
+                    st.setDate(2, ativ.getDtInicio());
+                    st.setDate(3, ativ.getDtFim());
+                    st.setInt(4, ativ.getFuncionario().getCod());
+                    st.setInt(5, ativ.getStatus().getCod());
+                    st.setString(6, ativ.getSolicitante().getTheEmail());
+                    st.executeUpdate();
+                }
+                try (PreparedStatement st = conn.prepareStatement(sql1)) {
+                    st.setInt(1, ativ.getCodigo());
+                    st.setInt(2, ativ.getClassificacao().getCod());
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro alterando registro.");
+        }
     }
 
     public void exclui() {
