@@ -104,7 +104,7 @@ public class FuncionarioDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DAOException("Erro excluindo registro.");
+            throw new DAOException("Erro inserindo registro.");
         }
     }
 
@@ -138,7 +138,7 @@ public class FuncionarioDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DAOException("Erro alterando registro.");
+            throw new DAOException("Erro excluindo registro.");
         }
     }
 }
