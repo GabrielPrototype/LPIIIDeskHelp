@@ -71,7 +71,7 @@ public class CadClassificacao extends HttpServlet {
             }
 
             classificacao.setNome(request.getParameter("txtNome"));
-            classificacao.setAtiva(!"".equals(request.getParameter("chkAtiva")));
+            classificacao.setAtiva(request.getParameter("chkAtiva") != null);
 
             if (classificacao.getNome() == null || classificacao.getNome().isEmpty()) {
                 erros.add("Nome não informado.");
