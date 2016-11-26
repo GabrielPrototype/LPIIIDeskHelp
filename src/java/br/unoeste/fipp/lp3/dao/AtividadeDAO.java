@@ -137,6 +137,7 @@ public class AtividadeDAO {
                 {
                     st.setInt(1, ativ.getCodigo());
                     st.setInt(2, ativ.getClassificacao().getCod());
+                    st.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
