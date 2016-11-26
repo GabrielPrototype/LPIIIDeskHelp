@@ -99,9 +99,9 @@ public class CadStatus extends HttpServlet {
                 ));
             } catch (NumberFormatException ex) {
                 erros.add("Parâmetro inválido");
-            } //catch (DAOException ex) {
-                //erros.add(ex.getLocalizedMessage());
-            //}
+            } catch (DAOException ex) {
+                erros.add(ex.getLocalizedMessage());
+            }
         }
 
         List<Status> cadastrados = StatusDAO.lista();

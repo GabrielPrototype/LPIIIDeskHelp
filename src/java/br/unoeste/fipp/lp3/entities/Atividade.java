@@ -6,6 +6,8 @@
 package br.unoeste.fipp.lp3.entities;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,12 +22,12 @@ public class Atividade {
     private Funcionario funcionario;
     private Status status;
     private Solicitante solicitante;
-    private Classificacao classificacao;
+    private ArrayList<Classificacao> classificacao;
 
     public Atividade() {
     }
 
-    public Atividade(int codigo, String descricao, Date dtInicio, Date dtFim, Funcionario funcionario, Status status, Solicitante solicitante, Classificacao classificacao) {
+    public Atividade(int codigo, String descricao, Date dtInicio, Date dtFim, Funcionario funcionario, Status status, Solicitante solicitante) {
         this.codigo = codigo;
         this.descricao = descricao;
         this.dtInicio = dtInicio;
@@ -33,8 +35,8 @@ public class Atividade {
         this.funcionario = funcionario;
         this.status = status;
         this.solicitante = solicitante;
-        this.classificacao = classificacao;
     }
+
 
     public int getCodigo() {
         return codigo;
