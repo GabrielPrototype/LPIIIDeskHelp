@@ -101,6 +101,7 @@ public class ClassificacaoDAO {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, clas.getNome());
                     st.setBoolean(2, clas.isAtiva());
+                    st.setInt(3, clas.getCod());
                     st.executeUpdate();
                 }
             }

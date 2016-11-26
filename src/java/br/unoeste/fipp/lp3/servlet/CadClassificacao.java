@@ -37,37 +37,42 @@ public class CadClassificacao extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       Erro erros = new Erro();
+        Erro erros = new Erro();
 
         if (request.getParameter("sel") != null) {
             try {
-                Classificacao selecionado = ClassificacaoDAO.busca(request.getParameter("cod"));
+                Classificacao selecionado = ClassificacaoDAO.busca(Integer.parseInt(request.getParameter("sel")));
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
                     request.setAttribute("classificacao", selecionado);
                     request.setAttribute("alterando", true);
                 }
+            } catch (NumberFormatException ex){
+                erros.add("Ocorreu um erro na operação, tente novamente");
             } catch (Exception ex) {
                 erros.add("Uso inválido.");
-            }
+            } 
         }
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
+        
         if (inserir || alterar) {
-            
+
             Classificacao classificacao = new Classificacao();
-            
-            try {
-                classificacao.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
-            } catch (NumberFormatException ex) {
-                classificacao.setCod(-1);
-                erros.add("Código não informado corretamente.");
+
+            if (!inserir) {
+                try {
+                    classificacao.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
+                } catch (NumberFormatException ex) {
+                    classificacao.setCod(-1);
+                    erros.add("Código não informado corretamente.");
+                }
             }
-            
+
             classificacao.setNome(request.getParameter("txtNome"));
             classificacao.setAtiva(!"".equals(request.getParameter("chkAtiva")));
-          
+
             if (classificacao.getNome() == null || classificacao.getNome().isEmpty()) {
                 erros.add("Nome não informado.");
             }
