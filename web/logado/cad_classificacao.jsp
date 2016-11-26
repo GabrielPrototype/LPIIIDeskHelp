@@ -18,21 +18,20 @@
         </c:if>
         <form method="post" action="cad_classificacao.do">
             <label>Código</label>
-            <input type="text" name="txtCodigo" 
-                   ${alterando ? "readonly=\"readonly\"": ""}
-                   value="${empty erros.mensagens ? classificacao.codigo : param.txtCodigo}" size="5" maxlength="5"/>
+            <input type="text" name="txtCodigo" readonly="readonly" 
+                   value="${empty erros.mensagens ? classificacao.cod : param.txtCodigo}" size="5" maxlength="5"/>
             <label>Nome</label>
             <input type="text" name="txtNome" 
                    value="${empty erros.mensagens ? classificacao.nome : param.txtNome}" size="80" maxlength="100"/>
             
             
             <label>Ativo</label>
-            <input type="checkbox" name="chkAtiva"    
+            <input type="checkbox" name="chkAtiva" value="ativo"   
                 <c:if test="${empty erros.mensagens}">
-                    ${classificacao.ativa ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
+                    ${classificacao.ativa ? " checked=\"checked\"" : " checked=\"\""}
                 </c:if>
                 <c:if test="${not empty erros.mensagens}">
-                    ${param.chkAtiva ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
+                    ${param.chkAtiva ? " checked=\"checked\"" : " checked=\"\""}
                 </c:if>
             >  Ativo? <br>
 
@@ -57,14 +56,14 @@
                 </tr>
                 <c:forEach var="classif" items="${cadastrados}">
                     <tr>
-                        <td>${classif.codigo}</td>
+                        <td>${classif.cod}</td>
                         <td>${classif.nome}</td>
                         <td>${classif.ativa}</td>
                         <td>
-                            <a href="cad_classificacao.do?sel=${classif.codigo}">Selecionar</a>
+                            <a href="cad_classificacao.do?sel=${classif.cod}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_classificacao.do?del=${classif.codigo}">Excluir</a>
+                            <a href="cad_classificacao.do?del=${classif.cod}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>
