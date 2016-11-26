@@ -7,7 +7,9 @@ package br.unoeste.fipp.lp3.dao;
 
 import br.unoeste.fipp.lp3.entities.Status;
 import br.unoeste.fipp.lp3.persistencia.Conexao;
+import br.unoeste.fipp.lp3.persistencia.DAOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -78,15 +80,49 @@ public class StatusDAO {
         return null;
     }
 
-    public static void insere(Status status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void insere(Status sta)
+            throws DAOException {
+        String sql = "insert into status (sta_status,sta_ativo) values (?,?);";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, sta.getStatus());
+                    st.setBoolean(2, sta.isAtivo());
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro inserindo registro.");
+        }
     }
 
-    public static void altera(Status status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void altera(Status sta)
+            throws DAOException {
+        String sql = "update status set sta_status=?,sta_ativo=?;";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, sta.getStatus());
+                    st.setBoolean(2, sta.isAtivo());
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro alterando registro.");
+        }
     }
 
-    public static void exclui(int cod) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void exclui(int cod) throws DAOException {
+        String sql = "delete from status where sta_codigo=?;";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setInt(1, cod);
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro excluindo registro.");
+        }
     }
 }

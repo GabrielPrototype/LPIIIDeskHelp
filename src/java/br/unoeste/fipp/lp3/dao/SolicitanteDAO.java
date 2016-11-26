@@ -85,11 +85,15 @@ public class SolicitanteDAO {
 
     public static void insere(Solicitante sol)
             throws DAOException {
-        String sql = "insert into solicitante (sol_email, sol_nome, sol_telefone,sol_observacao) values (" + sol.getTheEmail() + "','" + sol.getNome() + "','" + sol.getTelefone() + "','" + sol.getObservacao() + ");";
+        String sql = "insert into solicitante (sol_email, sol_nome, sol_telefone,sol_observacao) values (?,?,?,?);";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
-                try (Statement st = conn.createStatement()) {
-                    st.executeUpdate(sql);
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setString(1, sol.getTheEmail());
+                    st.setString(2, sol.getNome());
+                    st.setString(3, sol.getTelefone());
+                    st.setString(4, sol.getObservacao());
+                    st.executeUpdate();
                 }
             }
         } catch (SQLException ex) {
