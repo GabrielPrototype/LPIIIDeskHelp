@@ -5,7 +5,8 @@
  */
 package br.unoeste.fipp.lp3.entities;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 /**
  *

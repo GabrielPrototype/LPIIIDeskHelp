@@ -5,10 +5,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="/LP3_2Bim_DeskHelp/css/layout.css" rel="stylesheet" type="text/css"/>
-        <title>Cadastro de Classificação</title>
+        <title>Cadastro de Funcionario</title>
     </head>
     <body>
-        <h1>Cadastro de Classificação</h1>
+        <h1>Cadastro de Funcionario</h1>
         <c:if test="${not empty requestScope.erros.mensagens}">
             <ul>
                 <c:forEach var="msg" items="${requestScope.erros.mensagens}">
@@ -18,8 +18,7 @@
         </c:if>
         <form method="post" action="cad_funcionario.do">
             <label>Código</label>
-            <input type="text" name="txtCodigo" 
-                   ${alterando ? "readonly=\"readonly\"": ""}
+            <input type="text" name="txtCodigo" readonly="readonly" 
                    value="${empty erros.mensagens ? funcionario.codigo : param.txtCodigo}" size="5" maxlength="5"/>
             <label>Nome</label>
             <input type="text" name="txtNome" 
@@ -45,12 +44,12 @@
             </select>
             
             <label>Ativo</label>
-            <input type="checkbox" name="chkAtiva"    
+            <input type="checkbox" name="chkAtivo" value="ativo"   
                 <c:if test="${empty erros.mensagens}">
-                    ${funcionario.ativo ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
+                    ${classificacao.ativa ? " checked=\"checked\"" : " checked=\"\""}
                 </c:if>
                 <c:if test="${not empty erros.mensagens}">
-                    ${param.chkAtiva ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
+                    ${param.chkAtiva ? " checked=\"checked\"" : " checked=\"\""}
                 </c:if>
             >  Ativo? <br>
 

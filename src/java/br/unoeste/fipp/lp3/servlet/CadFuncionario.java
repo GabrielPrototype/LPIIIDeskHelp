@@ -42,14 +42,14 @@ public class CadFuncionario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Erro erros = new Erro();
-
+        
         String emailexpression = "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
         Pattern emailpattern = Pattern.compile(emailexpression);
-        Matcher emailmatcher = null;
-
+        Matcher emailmatcher;
+        
         if (request.getParameter("sel") != null) {
             try {
-                Funcionario selecionado = FuncionarioDAO.busca(request.getParameter("cod"));
+                Funcionario selecionado = FuncionarioDAO.busca(Integer.parseInt(request.getParameter("cod")));
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
@@ -60,35 +60,39 @@ public class CadFuncionario extends HttpServlet {
                 erros.add("Uso inválido.");
             }
         }
-
+        
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
-
+        
         if (inserir || alterar) {
-
+            
             Funcionario funcionario = new Funcionario();
-            String dtContratacao, dtDemissao;
-
-            try {
-                funcionario.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
-            } catch (NumberFormatException ex) {
-                funcionario.setCod(-1);
-                erros.add("Código não informado corretamente.");
+            String dtContratacao, dtDemissao, tipo;
+            
+            if (alterar) {
+                try {
+                    funcionario.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
+                } catch (NumberFormatException ex) {
+                    funcionario.setCod(-1);
+                    erros.add("Código não informado corretamente.");
+                }
             }
-
+            
             funcionario.setNome(request.getParameter("txtNome"));
-            funcionario.setAtivo(!"".equals(request.getParameter("chkAtiva")));
+            funcionario.setAtivo(request.getParameter("chkAtivo") != null && !"".equals(request.getParameter("chkAtivo")));
+            funcionario.setSenha(request.getParameter("txtSenha"));
+            tipo = request.getParameter("selAdmin");
             dtContratacao = request.getParameter("txtDtContratacao");
             dtDemissao = request.getParameter("txtDtDemissao");
-
+            
             if (funcionario.getNome() == null || funcionario.getNome().isEmpty()) {
                 erros.add("Nome não informado.");
             }
-
+            
             if (funcionario.getSenha() == null || funcionario.getSenha().isEmpty()) {
                 erros.add("Senha não informada.");
             }
-
+            
             if (dtContratacao == null || dtContratacao.isEmpty()) {
                 erros.add("Data de Contratação não informada.");
             } else {
@@ -97,7 +101,7 @@ public class CadFuncionario extends HttpServlet {
                     erros.add("Data de Contratação não corresponde ao formato DD/MM/AAA");
                 }
             }
-
+            
             if (dtDemissao == null || dtContratacao.isEmpty()) {
                 erros.add("Data de Contratação não informada.");
             } else {
@@ -106,24 +110,35 @@ public class CadFuncionario extends HttpServlet {
                     erros.add("Data de Contratação não corresponde ao formato DD/MM/AAA");
                 }
             }
+            
+            if (tipo == null || tipo.isEmpty()) {
+                erros.add("Tipo invalido");
+            } else {
+                funcionario.setTipo(tipo.charAt(0));
+            }
 
             //Validações
             if (erros.isEmpty()) {
                 String auxdata[];
                 Calendar cal = Calendar.getInstance();
-
-                auxdata = dtContratacao.split("\\/|-|\\.");
-                cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
-                cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
-                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
-                funcionario.setDtContratacao((Date) cal.getTime());
-
-                auxdata = dtDemissao.split("\\/|-|\\.");
-                cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
-                cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
-                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
-                funcionario.setDtDemissão((Date) cal.getTime());
-
+                try {
+                    auxdata = dtContratacao.split("\\/|-|\\.");
+                    cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
+                    cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
+                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
+                    funcionario.setDtContratacao(cal.getTime());
+                } catch (Exception e) {
+                }
+                
+                try {
+                    auxdata = dtDemissao.split("\\/|-|\\.");
+                    cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
+                    cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
+                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
+                    funcionario.setDtDemissão(cal.getTime());
+                } catch (Exception e) {
+                }
+                
                 try {
                     if (inserir) {
                         FuncionarioDAO.insere(funcionario);
@@ -134,12 +149,12 @@ public class CadFuncionario extends HttpServlet {
                     erros.add(ex.getLocalizedMessage());
                 }
             }
-
+            
         }
         if (!erros.isEmpty()) {
             request.setAttribute("alterando", alterar);
         }
-
+        
         if (request.getParameter("del") != null) {
             try {
                 FuncionarioDAO.exclui(Integer.parseInt(
@@ -151,7 +166,7 @@ public class CadFuncionario extends HttpServlet {
                 erros.add("Parâmetro inválido");
             }
         }
-
+        
         List<Funcionario> cadastrados = FuncionarioDAO.lista();
         request.setAttribute("erros", erros);
         request.setAttribute("cadastrados", cadastrados);
