@@ -28,56 +28,26 @@ public class AtividadeDAO {
 
     public static List<Atividade> lista() {
         List<Atividade> temp = new ArrayList();
+        Atividade atividade;
         String sql = "select * from atividade a "
                 + "inner join funcionario f on a.fun_codigo=f.fun_codigo "
                 + "inner join status st on st.sta_codigo=a.sta_codigo "
                 + "inner join solicitante s on s.sol_email=a.sol_email "
                 + "inner join atividadeclassificacao ac on a.ati_codigo=ac.ati_codigo inner join classificacao c on ac.cla_codigo=c.cla_codigo"
                 + "ORDER BY a.ati_codigo;";
+        String sql2 = "select * from atividadeclassificacao ac inner join atividade a on ac.ati_codigo = a.ati_codigo ORDER BY ac.ati_codigo;";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
                     try (ResultSet rs = st.executeQuery(sql)) {
                         while (rs.next()) {
-                            temp.add(new Atividade(rs.getInt("ati_codigo"),
-                                    rs.getString("ati_descricao"),
-                                    rs.getDate("ati_dtinicio"),
-                                    rs.getDate("ati_dtfim"),
-                                    new Funcionario(rs.getInt("fun_codigo"), rs.getString("fun_nome"), rs.getDate("fun_dtcontracao"), rs.getDate("fun_dtdemissão"), rs.getBoolean("fun_ativo"), rs.getString("fun_senha"), (char) rs.getByte("fun_tipo")),
-                                    new Status(rs.getInt("sta_codigo"), rs.getString("sta_status"), rs.getBoolean("sta_ativo")),
-                                    new Solicitante(rs.getString("sol_email"), rs.getString("sol_nome"), rs.getString("sol_telefone"), rs.getString("sol_observacao")),
-                                    new Classificacao(rs.getInt("cla_codigo"), rs.getString("cla_nome"), rs.getBoolean("cla_ativa"))));
-                        }
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-        }
-        return temp;
-    }
-
-    public static Atividade busca(String descr) {
-                String sql = "select * from atividade a "
-                + "inner join funcionario f on a.fun_codigo=f.fun_codigo "
-                + "inner join status st on st.sta_codigo=a.sta_codigo "
-                + "inner join solicitante s on s.sol_email=a.sol_email "
-                + "where a.ati_descricao =  '" + descr + "';";
-        String sql2 = "select * from atividadeclassificacao where ati_codigo = ?;";
-        Atividade atividade;
-        try (Connection conn = Conexao.abre()) {
-            if (conn != null) {
-
-                try (Statement st = conn.createStatement()) {
-                    try (ResultSet rs = st.executeQuery(sql)) {
-                        if (rs.next()) {
                             atividade = new Atividade(rs.getInt("ati_codigo"),
                                     rs.getString("ati_descricao"),
                                     rs.getDate("ati_dtinicio"),
                                     rs.getDate("ati_dtfim"),
                                     new Funcionario(rs.getInt("fun_codigo"), rs.getString("fun_nome"), rs.getDate("fun_dtcontracao"), rs.getDate("fun_dtdemissão"), rs.getBoolean("fun_ativo"), rs.getString("fun_senha"), (char) rs.getByte("fun_tipo")),
                                     new Status(rs.getInt("sta_codigo"), rs.getString("sta_status"), rs.getBoolean("sta_ativo")),
-                                    new Solicitante(rs.getString("sol_email"), rs.getString("sol_nome"), rs.getString("sol_telefone"), rs.getString("sol_observacao"))
-                            );
+                                    new Solicitante(rs.getString("sol_email"), rs.getString("sol_nome"), rs.getString("sol_telefone"), rs.getString("sol_observacao")));
                             try (Statement st2 = conn.createStatement()) {
                                 try (ResultSet rs2 = st2.executeQuery(sql2)) {
                                     ArrayList<Classificacao> classificacoes = new ArrayList();
@@ -87,17 +57,57 @@ public class AtividadeDAO {
                                     atividade.setClassificacoes(classificacoes);
                                 }
                             }
-                            return atividade;
+                            temp.add(atividade);
                         }
                     }
                 }
-
             }
-        } catch (Exception e) {
+        } catch (SQLException ex) {
         }
-        return null;
+        return temp;
     }
 
+//    public static Atividade busca(String descr) {
+//        String sql = "select * from atividade a "
+//                + "inner join funcionario f on a.fun_codigo=f.fun_codigo "
+//                + "inner join status st on st.sta_codigo=a.sta_codigo "
+//                + "inner join solicitante s on s.sol_email=a.sol_email "
+//                + "where a.ati_descricao =  '" + descr + "';";
+//        String sql2 = "select * from atividadeclassificacao where ati_codigo = ?;";
+//        Atividade atividade;
+//        try (Connection conn = Conexao.abre()) {
+//            if (conn != null) {
+//
+//                try (Statement st = conn.createStatement()) {
+//                    try (ResultSet rs = st.executeQuery(sql)) {
+//                        if (rs.next()) {
+//                            atividade = new Atividade(rs.getInt("ati_codigo"),
+//                                    rs.getString("ati_descricao"),
+//                                    rs.getDate("ati_dtinicio"),
+//                                    rs.getDate("ati_dtfim"),
+//                                    new Funcionario(rs.getInt("fun_codigo"), rs.getString("fun_nome"), rs.getDate("fun_dtcontracao"), rs.getDate("fun_dtdemissão"), rs.getBoolean("fun_ativo"), rs.getString("fun_senha"), (char) rs.getByte("fun_tipo")),
+//                                    new Status(rs.getInt("sta_codigo"), rs.getString("sta_status"), rs.getBoolean("sta_ativo")),
+//                                    new Solicitante(rs.getString("sol_email"), rs.getString("sol_nome"), rs.getString("sol_telefone"), rs.getString("sol_observacao"))
+//                            );
+//                            try (Statement st2 = conn.createStatement()) {
+//                                try (ResultSet rs2 = st2.executeQuery(sql2)) {
+//                                    ArrayList<Classificacao> classificacoes = new ArrayList();
+//                                    while (rs2.next()) {
+//                                        classificacoes.add(new Classificacao(rs.getInt("cla_codigo"), rs.getString("cla_nome"), rs.getBoolean("cla_ativa")));
+//                                    }
+//                                    atividade.setClassificacoes(classificacoes);
+//                                }
+//                            }
+//                            return atividade;
+//                        }
+//                    }
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//        }
+//        return null;
+//    }
     public static Atividade busca(int cod) {
         String sql = "select * from atividade a "
                 + "inner join funcionario f on a.fun_codigo=f.fun_codigo "
@@ -140,7 +150,7 @@ public class AtividadeDAO {
         return null;
     }
 
-    public static void insere(Atividade ativ)
+    public static void insere(Atividade ativ , Classificacao cla)
             throws DAOException {
         String sql = "insert into atividade (ati_descricao,ati_dtinicio,ati_dtfim,fun_codigo,sta_codigo,sol_email) values (?,?,?,?,?,?)";
         String sql1 = "insert into atividadeclassificacao(ati_codigo,cla_codigo) values (?,?);";
@@ -161,9 +171,11 @@ public class AtividadeDAO {
                     st.executeUpdate();
                 }
                 try (PreparedStatement st = conn.prepareStatement(sql1)) {
-                    st.setInt(1, ativ.getCodigo());
-                    st.setArray(2, ativ.getClassificacoes());
-                    st.executeUpdate();
+                    for (Classificacao classificacao : ativ.getClassificacoes()) {
+                        st.setInt(1, ativ.getCodigo());
+                        st.setInt(2, cla.getCod());
+                        st.executeUpdate();
+                    }
                 }
             }
         } catch (SQLException ex) {
@@ -171,12 +183,13 @@ public class AtividadeDAO {
         }
     }
 
-    public static void altera(Atividade ativ)
+    public static void altera(Atividade ativ, Classificacao cla )
             throws DAOException {
         String sql = "update atividade set ati_descricao = ?, ati_dtinicio = ?, ati_dtfim=?,fun_codigo=?,sta_codigo=?,sol_email=? where ati_codigo = ?;";
         String sql1 = "update atividadeclassificacao ati_cod=?,cla_cod=? where ati_cod =?;";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
+
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, ativ.getDescricao());
                     st.setDate(2, ativ.getDtInicio());
@@ -187,9 +200,11 @@ public class AtividadeDAO {
                     st.executeUpdate();
                 }
                 try (PreparedStatement st = conn.prepareStatement(sql1)) {
-                    st.setInt(1, ativ.getCodigo());
-                    st.setInt(2, ativ.getClassificacao().getCod());
-                    st.executeUpdate();
+                    for (Classificacao classificacao : ativ.getClassificacoes()) {
+                        st.setInt(1, ativ.getCodigo());
+                        st.setInt(2, cla.getCod());
+                        st.executeUpdate();
+                    }
                 }
             }
         } catch (SQLException ex) {
