@@ -24,7 +24,7 @@ public class FuncionarioDAO {
 
     public static List<Funcionario> lista() {
         List<Funcionario> temp = new ArrayList();
-        String sql = "select fun_codigo,fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo from funcionario where fun_codigo ORDER BY fun_nome;";
+        String sql = "select fun_codigo,fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo from funcionario ORDER BY fun_nome;";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
@@ -36,12 +36,16 @@ public class FuncionarioDAO {
                                     rs.getDate("fun_dtdemissao"),
                                     rs.getBoolean("fun_ativo"),
                                     rs.getString("fun_senha"),
-                                    (char) rs.getByte("fun_tipo")));
+                                    rs.getString("fun_tipo").charAt(0)));
                         }
+
+                    } catch (Exception e) {
+                        System.out.println(e);
                     }
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
         return temp;
     }
@@ -67,11 +71,12 @@ public class FuncionarioDAO {
         return null;
     }
 
-    public static Funcionario busca(int cod) {
-        String sql = "select fun_codigo,fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo from funcionario where fun_codigo = '" + cod + "';";
+    public static Funcionario busca(int cod) throws DAOException {
+        String sql = "select fun_codigo,fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo from funcionario where fun_codigo=?;";
         try (Connection conn = Conexao.abre()) {
-            try (Statement st = conn.createStatement()) {
-                try (ResultSet rs = st.executeQuery(sql)) {
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setInt(1, cod);
+                try (ResultSet rs = st.executeQuery()) {
                     if (rs.next()) {
                         return new Funcionario(rs.getInt("fun_codigo"),
                                 rs.getString("fun_nome"),
@@ -79,11 +84,14 @@ public class FuncionarioDAO {
                                 rs.getDate("fun_dtdemissao"),
                                 rs.getBoolean("fun_ativo"),
                                 rs.getString("fun_senha"),
-                                (char) rs.getByte("fun_tipo"));
+                                rs.getString("fun_tipo").charAt(0));
                     }
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException ex) {
+            throw new DAOException("Erro inserindo registro.");
         }
         return null;
     }
@@ -95,14 +103,10 @@ public class FuncionarioDAO {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
 
                     st.setString(1, fun.getNome());
+                    st.setDate(2, new java.sql.Date(fun.getDtContratacao().getTime()));
 
                     try {
-                        st.setDate(2, new java.sql.Date(fun.getDtContratacao().getTime()));
-                    } catch (NullPointerException ex) {
-                        st.setNull(2, java.sql.Types.DATE);
-                    }
-                    try {
-                        st.setDate(3, new java.sql.Date(fun.getDtDemissão().getTime()));
+                        st.setDate(3, new java.sql.Date(fun.getDtDemissao().getTime()));
                     } catch (NullPointerException ex) {
                         st.setNull(3, java.sql.Types.DATE);
                     }
@@ -126,7 +130,7 @@ public class FuncionarioDAO {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, fun.getNome());
                     st.setDate(2, new java.sql.Date(fun.getDtContratacao().getTime()));
-                    st.setDate(3, new java.sql.Date(fun.getDtDemissão().getTime()));
+                    st.setDate(3, new java.sql.Date(fun.getDtDemissao().getTime()));
                     st.setBoolean(4, fun.isAtivo());
                     st.setString(5, fun.getSenha());
                     st.setString(6, "" + fun.getTipo());

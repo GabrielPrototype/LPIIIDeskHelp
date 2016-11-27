@@ -49,11 +49,11 @@ public class CadFuncionario extends HttpServlet {
         
         if (request.getParameter("sel") != null) {
             try {
-                Funcionario selecionado = FuncionarioDAO.busca(Integer.parseInt(request.getParameter("cod")));
+                Funcionario selecionado = FuncionarioDAO.busca(Integer.parseInt(request.getParameter("sel")));
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
-                    request.setAttribute("classificacao", selecionado);
+                    request.setAttribute("funcionario", selecionado);
                     request.setAttribute("alterando", true);
                 }
             } catch (Exception ex) {
@@ -135,7 +135,7 @@ public class CadFuncionario extends HttpServlet {
                     cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
                     cal.set(Calendar.MONTH, Integer.parseInt(auxdata[1]));
                     cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(auxdata[0]));
-                    funcionario.setDtDemissão(cal.getTime());
+                    funcionario.setDtDemissao(cal.getTime());
                 } catch (Exception e) {
                 }
                 

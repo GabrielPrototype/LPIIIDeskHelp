@@ -19,16 +19,16 @@
         <form method="post" action="cad_funcionario.do">
             <label>Código</label>
             <input type="text" name="txtCodigo" readonly="readonly" 
-                   value="${empty erros.mensagens ? funcionario.codigo : param.txtCodigo}" size="5" maxlength="5"/>
+                   value="${empty erros.mensagens ? funcionario.cod : param.txtCodigo}" size="5" maxlength="5"/>
             <label>Nome</label>
             <input type="text" name="txtNome" 
                    value="${empty erros.mensagens ? funcionario.nome : param.txtNome}" size="80" maxlength="100"/>
             <label>Data de Contratação</label>
             <input type="text" name="txtDtContratacao" 
-                   value="${empty erros.mensagens ? funcionario.nome : param.DtContratacao}" size="80" maxlength="12"/>
+                   value="${empty erros.mensagens ? funcionario.dtContratacaoString : param.txtDtContratacao}" size="80" maxlength="12"/>
             <label>Data de Demissão</label>
             <input type="text" name="txtDtDemissao" 
-                   value="${empty erros.mensagens ? funcionario.nome : param.txtDtDemissao}" size="80" maxlength="12"/>
+                   value="${empty erros.mensagens ? funcionario.dtDemissaoString : param.txtDtDemissao}" size="80" maxlength="12"/>
             <label>Senha</label>
             <input type="password" name="txtSenha" size="8" maxlength="6"/>
             
@@ -46,7 +46,7 @@
             <label>Ativo</label>
             <input type="checkbox" name="chkAtivo" value="ativo"   
                 <c:if test="${empty erros.mensagens}">
-                    ${classificacao.ativa ? " checked=\"checked\"" : " checked=\"\""}
+                    ${classificacao.ativo ? " checked=\"checked\"" : " checked=\"\""}
                 </c:if>
                 <c:if test="${not empty erros.mensagens}">
                     ${param.chkAtiva ? " checked=\"checked\"" : " checked=\"\""}
@@ -69,19 +69,21 @@
                 <tr>
                     <th>Código</th>
                     <th>Nome</th>
-                    <th>Ativa</th>
+                    <th>Ativo</th>
+                    <th>Tipo</th>
                     <th colspan="2">-</th>
                 </tr>
                 <c:forEach var="func" items="${cadastrados}">
                     <tr>
-                        <td>${func.codigo}</td>
+                        <td>${func.cod}</td>
                         <td>${func.nome}</td>
-                        <td>${func.ativa}</td>
+                        <td>${func.ativo}</td>
+                        <td>${func.tipo}</td>
                         <td>
-                            <a href="cad_funcionario.do?sel=${func.codigo}">Selecionar</a>
+                            <a href="cad_funcionario.do?sel=${func.cod}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_funcionario.do?del=${func.codigo}">Excluir</a>
+                            <a href="cad_funcionario.do?del=${func.cod}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>
