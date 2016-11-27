@@ -88,18 +88,28 @@ public class FuncionarioDAO {
         return null;
     }
 
-    public static void insere(Funcionario fun)
-            throws DAOException {
+    public static void insere(Funcionario fun) throws DAOException {
         String sql = "insert into funcionario (fun_nome,fun_dtcontratacao,fun_dtdemissao,fun_ativo,fun_senha,fun_tipo) values (?,?,?,?,?,?);";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
+
                     st.setString(1, fun.getNome());
-                    st.setDate(2, fun.getDtContratacao());
-                    st.setDate(3, fun.getDtDemissão());
+
+                    try {
+                        st.setDate(2, new java.sql.Date(fun.getDtContratacao().getTime()));
+                    } catch (NullPointerException ex) {
+                        st.setNull(2, java.sql.Types.DATE);
+                    }
+                    try {
+                        st.setDate(3, new java.sql.Date(fun.getDtDemissão().getTime()));
+                    } catch (NullPointerException ex) {
+                        st.setNull(3, java.sql.Types.DATE);
+                    }
+
                     st.setBoolean(4, fun.isAtivo());
                     st.setString(5, fun.getSenha());
-                    st.setString(6, "" + fun.getTipo());
+                    st.setString(6, String.valueOf(fun.getTipo()));
                     st.executeUpdate();
                 }
             }
@@ -115,8 +125,8 @@ public class FuncionarioDAO {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, fun.getNome());
-                    st.setDate(2, fun.getDtContratacao());
-                    st.setDate(3, fun.getDtDemissão());
+                    st.setDate(2, new java.sql.Date(fun.getDtContratacao().getTime()));
+                    st.setDate(3, new java.sql.Date(fun.getDtDemissão().getTime()));
                     st.setBoolean(4, fun.isAtivo());
                     st.setString(5, fun.getSenha());
                     st.setString(6, "" + fun.getTipo());

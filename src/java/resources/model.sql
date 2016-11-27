@@ -137,7 +137,7 @@ ALTER TABLE atividadeclassificacao OWNER TO postgres;
 CREATE TABLE funcionario (
     fun_codigo integer NOT NULL,
     fun_nome character varying(70) NOT NULL,
-    fun_dtcontracao date NOT NULL,
+    fun_dtcontratacao date NOT NULL,
     fun_dtdemissao date,
     fun_ativo boolean NOT NULL,
     fun_senha character varying(15) NOT NULL,
@@ -233,7 +233,7 @@ SELECT pg_catalog.setval('"Atividade_ati_codigo_seq"', 1, false);
 -- Name: Classificacao_cla_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"Classificacao_cla_codigo_seq"', 1, false);
+SELECT pg_catalog.setval('"Classificacao_cla_codigo_seq"', 5, true);
 
 
 --
@@ -244,23 +244,10 @@ SELECT pg_catalog.setval('"Classificacao_cla_codigo_seq"', 1, false);
 
 SELECT pg_catalog.setval('"Status_sta_codigo_seq"', 1, false);
 
-
 --
--- TOC entry 2190 (class 0 OID 24732)
--- Dependencies: 189
--- Data for Name: atividade; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 2062 (class 2606 OID 24757)
+-- Name: AtividadeClassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
-
-
-SELECT pg_catalog.setval('funcionario_fun_codigo_seq', 1, false);
-
-
---
--- TOC entry 2184 (class 0 OID 24709)
--- Dependencies: 183
--- Data for Name: solicitante; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
 
 ALTER TABLE ONLY atividadeclassificacao
     ADD CONSTRAINT "AtividadeClassificacao_pkey" PRIMARY KEY (ati_codigo, cla_codigo);
@@ -354,10 +341,3 @@ ALTER TABLE ONLY atividade
 
 ALTER TABLE ONLY atividade
     ADD CONSTRAINT atividade_status_pk FOREIGN KEY (sta_codigo) REFERENCES status(sta_codigo);
-
-
---
--- TOC entry 2198 (class 0 OID 0)
--- Dependencies: 6
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
