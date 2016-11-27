@@ -18,23 +18,22 @@
         </c:if>
         <form method="post" action="cad_status.do">
             <label>Código</label>
-            <input type="text" name="txtCodigo" 
-                   ${alterando ? "readonly=\"readonly\"": ""}
-                   value="${empty erros.mensagens ? Status.cod : param.txtCodigo}" size="5" maxlength="5"/>
+            <input type="text" name="txtCodigo" readonly="readonly" 
+                   value="${empty erros.mensagens ? status.cod : param.txtCodigo}" size="5" maxlength="5"/>
             <label>Nome</label>
             <input type="text" name="txtStatus" 
-                   value="${empty erros.mensagens ? Status.status : param.txtNome}" size="80" maxlength="100"/>
+                   value="${empty erros.mensagens ? status.status : param.txtNome}" size="80" maxlength="100"/>
             <label>Ativo</label>
 
 
-            <input type="checkbox" name="chkAtiva"    
-                <c:if test="${empty erros.mensagens}">
-                    ${status.ativo ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
-                </c:if>
-                <c:if test="${not empty erros.mensagens}">
-                    ${param.chkAtiva ? " value=\"ativo\" checked=\"checked\"" : " value=\"\""}
-                </c:if>
-            >  Ativo? <br>
+            <input type="checkbox" name="chkAtiva" value="ativo"   
+                   <c:if test="${empty erros.mensagens}">
+                       ${status.ativo ? " checked=\"checked\"" : " checked=\"\""}
+                   </c:if>
+                   <c:if test="${not empty erros.mensagens}">
+                       ${param.chkAtiva ? " checked=\"checked\"" : " checked=\"\""}
+                   </c:if>
+                   >  Ativo? <br>
 
 
             <p>
@@ -47,7 +46,7 @@
 
         </form>
         <c:if test="${not empty cadastrados}">
-            <h2>Classificações Cadastradas</h2>
+            <h2>Status Cadastradas</h2>
             <table>
                 <tr>
                     <th>Código</th>
@@ -55,16 +54,16 @@
                     <th>Ativo</th>
                     <th colspan="2">-</th>
                 </tr>
-                <c:forEach var="classif" items="${cadastrados}">
+                <c:forEach var="stat" items="${cadastrados}">
                     <tr>
-                        <td>${classif.cod}</td>
-                        <td>${classif.status}</td>
-                        <td>${classif.ativo}</td>
+                        <td>${stat.cod}</td>
+                        <td>${stat.status}</td>
+                        <td>${stat.ativo}</td>
                         <td>
-                            <a href="cad_status.do?sel=${classif.cod}">Selecionar</a>
+                            <a href="cad_status.do?sel=${stat.cod}">Selecionar</a>
                         </td>
                         <td>
-                            <a href="cad_status.do?del=${classif.cod}">Excluir</a>
+                            <a href="cad_status.do?del=${stat.cod}">Excluir</a>
                         </td>
                     </tr>
                 </c:forEach>

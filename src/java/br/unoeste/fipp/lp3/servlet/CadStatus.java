@@ -37,11 +37,11 @@ public class CadStatus extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       Erro erros = new Erro();
+        Erro erros = new Erro();
 
         if (request.getParameter("sel") != null) {
             try {
-                Status selecionado = StatusDAO.busca(Integer.parseInt(request.getParameter("cod")));
+                Status selecionado = StatusDAO.busca(Integer.parseInt(request.getParameter("sel")));
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {
@@ -55,19 +55,20 @@ public class CadStatus extends HttpServlet {
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
         if (inserir || alterar) {
-            
+
             Status status = new Status();
-            
-            try {
-                status.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
-            } catch (NumberFormatException ex) {
-                status.setCod(-1);
-                erros.add("Código não informado corretamente.");
+            if (alterar) {
+                try {
+                    status.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
+                } catch (NumberFormatException ex) {
+                    status.setCod(-1);
+                    erros.add("Código não informado corretamente.");
+                }
             }
-            
+
             status.setStatus(request.getParameter("txtStatus"));
             status.setAtivo(!"".equals(request.getParameter("chkAtiva")));
-          
+
             if (status.getStatus() == null || status.getStatus().isEmpty()) {
                 erros.add("Status não informado.");
             }
@@ -80,10 +81,10 @@ public class CadStatus extends HttpServlet {
                     } else {
                         StatusDAO.altera(status);
                     }
-                } catch (Exception e){
-                
+                } catch (Exception e) {
+
                 }//catch (DAOException ex) {
-                    //erros.add(ex.getLocalizedMessage());
+                //erros.add(ex.getLocalizedMessage());
                 //}
             }
 
