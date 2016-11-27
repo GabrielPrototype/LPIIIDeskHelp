@@ -212,8 +212,24 @@ public class AtividadeDAO {
         }
     }
 
-    public void exclui() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void exclui(int codigo)
+            throws DAOException {
+        String sql = "delete from atividadeclassificacao where ati_codigo = ?;";
+        String sql1= "delete from atividade where ati_codigo = ?;";
+        try (Connection conn = Conexao.abre()) {
+            if (conn != null) {
+                try (PreparedStatement st = conn.prepareStatement(sql)) {
+                    st.setInt(1, codigo);
+                    st.executeUpdate();
+                }
+                try (PreparedStatement st = conn.prepareStatement(sql1)) {
+                    st.setInt(1, codigo);
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Erro excluindo registro.");
+        }
     }
 
 }
