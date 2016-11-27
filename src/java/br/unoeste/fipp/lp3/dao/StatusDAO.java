@@ -98,12 +98,13 @@ public class StatusDAO {
 
     public static void altera(Status sta)
             throws DAOException {
-        String sql = "update status set sta_status=?,sta_ativo=?;";
+        String sql = "update status set sta_status=?,sta_ativo=? where sta_codigo=?;";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, sta.getStatus());
                     st.setBoolean(2, sta.isAtivo());
+                    st.setInt(3,sta.getCod());
                     st.executeUpdate();
                 }
             }

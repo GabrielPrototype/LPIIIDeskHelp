@@ -120,6 +120,7 @@ public class FuncionarioDAO {
                     st.setBoolean(4, fun.isAtivo());
                     st.setString(5, fun.getSenha());
                     st.setString(6, "" + fun.getTipo());
+                    st.setInt(7, fun.getCod());
                     st.executeUpdate();
                 }
             }

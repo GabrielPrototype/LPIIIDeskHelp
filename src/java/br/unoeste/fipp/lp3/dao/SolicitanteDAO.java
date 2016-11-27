@@ -103,14 +103,14 @@ public class SolicitanteDAO {
 
     public static void altera(Solicitante sol)
             throws DAOException {
-        String sql = "update solicitante set sol_email=?,sol_nome = ?, sol_telefone = ?, sol_observacao = ? where sol_email = ?";
+        String sql = "update solicitante set sol_nome = ?, sol_telefone = ?, sol_observacao = ? where sol_email = ?";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
-                    st.setString(1, sol.getTheEmail());
-                    st.setString(2, sol.getNome());
-                    st.setString(3, sol.getTelefone());
-                    st.setString(4, sol.getObservacao());
+                    st.setString(1, sol.getNome());
+                    st.setString(2, sol.getTelefone());
+                    st.setString(3, sol.getObservacao());
+                    st.setString(4, sol.getTheEmail());
                     st.executeUpdate();
                 }
             }

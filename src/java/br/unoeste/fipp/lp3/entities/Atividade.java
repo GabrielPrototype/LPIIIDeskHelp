@@ -14,7 +14,7 @@ import java.util.List;
  * @author titan
  */
 public class Atividade {
-    
+
     private int codigo;
     private String descricao;
     private Date dtInicio;
@@ -36,7 +36,6 @@ public class Atividade {
         this.status = status;
         this.solicitante = solicitante;
     }
-
 
     public int getCodigo() {
         return codigo;
@@ -102,8 +101,4 @@ public class Atividade {
         this.classificacoes = classificacoes;
     }
 
-    
-    }
-    
-    
 }
