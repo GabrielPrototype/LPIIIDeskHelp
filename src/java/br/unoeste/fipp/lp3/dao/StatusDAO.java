@@ -24,7 +24,7 @@ public class StatusDAO {
 
     public static List<Status> lista() {
         List<Status> temp = new ArrayList();
-        String sql = "select sta_codigo,sta_status,sta_ativo from status where sta_codigo;";
+        String sql = "select sta_codigo,sta_status,sta_ativo from status;";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
@@ -38,6 +38,7 @@ public class StatusDAO {
                 }
             }
         } catch (Exception e) {
+            System.out.println(e);
         }
         return temp;
     }
@@ -62,7 +63,7 @@ public class StatusDAO {
     }
 
     public static Status busca(int cod) {
-        String sql = "select sta_codigo,sta_status,sta_ativo from status where sta_nome = '" + cod + "';";
+        String sql = "select sta_codigo,sta_status,sta_ativo from status where sta_codigo = '" + cod + "';";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {

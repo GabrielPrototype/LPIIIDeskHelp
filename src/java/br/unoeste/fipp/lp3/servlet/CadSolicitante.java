@@ -37,7 +37,7 @@ public class CadSolicitante extends HttpServlet {
 
         if (request.getParameter("sel") != null) {
             try {
-                Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("email"));
+                Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("sel"));
                 if (selecionado == null) {
                     erros.add("Não cadastrado.");
                 } else {

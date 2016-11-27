@@ -8,7 +8,7 @@
         <title>Cadastro de Solicitante</title>
     </head>
     <body>
-        <h1>Cadastro de Usuário</h1>
+        <h1>Cadastro de Solicitante</h1>
         <c:if test="${not empty requestScope.erros.mensagens}">
             <ul>
                 <c:forEach var="msg" items="${requestScope.erros.mensagens}">
