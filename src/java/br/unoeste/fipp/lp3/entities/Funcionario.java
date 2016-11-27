@@ -8,13 +8,12 @@ package br.unoeste.fipp.lp3.entities;
 import java.util.Calendar;
 import java.util.Date;
 
-
 /**
  *
  * @author titan
  */
-public class Funcionario 
-{
+public class Funcionario {
+
     private int cod;
     private String nome;
     private String dtContratacaoString;
@@ -81,23 +80,28 @@ public class Funcionario
     public Date getDtDemissao() {
         return dtDemissao;
     }
-    
-    public String getDtDemissaoString(){
-        Calendar cal = Calendar.getInstance();
-        
-        cal.setTime(dtDemissao);
-                
-        return cal.get(Calendar.DAY_OF_MONTH)+"//"+cal.get(Calendar.MONTH)+"//"+cal.get(Calendar.YEAR);
+
+    public String getDtDemissaoString() {
+
+        String str;
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dtDemissao);
+            str = cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR);
+        } catch (NullPointerException e) {
+            str = "";
+        }
+
+        return str;
     }
-    
-    public String getDtContratacaoString(){
+
+    public String getDtContratacaoString() {
         Calendar cal = Calendar.getInstance();
-        
+
         cal.setTime(dtContratacao);
-                
-        return cal.get(Calendar.DAY_OF_MONTH)+"//"+cal.get(Calendar.MONTH)+"//"+cal.get(Calendar.YEAR);
+
+        return cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR);
     }
-    
 
     public boolean isAtivo() {
         return ativo;
@@ -110,6 +114,5 @@ public class Funcionario
     public char getTipo() {
         return tipo;
     }
-    
-    
+
 }
