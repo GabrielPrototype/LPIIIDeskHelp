@@ -62,7 +62,7 @@ public class FuncionarioDAO {
                                 rs.getDate("fun_dtdemissao"),
                                 rs.getBoolean("fun_ativo"),
                                 rs.getString("fun_senha"),
-                                (char) rs.getByte("fun_tipo"));
+                                rs.getString("fun_tipo").charAt(0));
                     }
                 }
             }
