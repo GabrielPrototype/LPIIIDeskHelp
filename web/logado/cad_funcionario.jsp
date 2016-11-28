@@ -32,6 +32,7 @@
             <label>Senha</label>
             <input type="password" name="txtSenha" size="8" maxlength="6"/>
             
+            <label>Tipo</label>
             <select name="selAdmin">
                 <c:if test="${empty erros.mensagens}">
                     <option value="n" ${usuario.tipo == 'n' ? "" : "selected=\"selected\""}>Normal</option>
@@ -71,6 +72,8 @@
                     <th>Nome</th>
                     <th>Ativo</th>
                     <th>Tipo</th>
+                    <th>Contratação</th>
+                    <th>Demissão</th>
                     <th colspan="2">-</th>
                 </tr>
                 <c:forEach var="func" items="${cadastrados}">
@@ -79,6 +82,8 @@
                         <td>${func.nome}</td>
                         <td>${func.ativo}</td>
                         <td>${func.tipo}</td>
+                        <td>${func.dtContratacaoString}</td>
+                        <td>${func.dtDemissaoString}</td>
                         <td>
                             <a href="cad_funcionario.do?sel=${func.cod}">Selecionar</a>
                         </td>

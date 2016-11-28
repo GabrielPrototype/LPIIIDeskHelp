@@ -124,13 +124,19 @@ public class FuncionarioDAO {
 
     public static void altera(Funcionario fun)
             throws DAOException {
-        String sql = "update funcionario set fun_nome=?,fun_dtcontratacao = ?, fun_dtdemissao = ?, fun_ativo = ?,fun_senha = ?,fun_tipo = ? where fun_cod = ?";
+        String sql = "update funcionario set fun_nome=?,fun_dtcontratacao = ?, fun_dtdemissao = ?, fun_ativo = ?,fun_senha = ?,fun_tipo = ? where fun_codigo = ?";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, fun.getNome());
                     st.setDate(2, new java.sql.Date(fun.getDtContratacao().getTime()));
-                    st.setDate(3, new java.sql.Date(fun.getDtDemissao().getTime()));
+                    
+                    try {
+                        st.setDate(3, new java.sql.Date(fun.getDtDemissao().getTime()));
+                    } catch (NullPointerException ex) {
+                        st.setNull(3, java.sql.Types.DATE);
+                    }
+                    
                     st.setBoolean(4, fun.isAtivo());
                     st.setString(5, fun.getSenha());
                     st.setString(6, "" + fun.getTipo());
