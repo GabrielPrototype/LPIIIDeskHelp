@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Aluno
  */
-//@WebFilter(filterName = "VerificadorDeLogin", urlPatterns = {"/logado/*"})
+@WebFilter(filterName = "VerificadorDeLogin", urlPatterns = {"/logado/*"})
 public class LoginCheckFilter implements Filter {
 
     @Override
