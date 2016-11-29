@@ -21,7 +21,7 @@ import javax.servlet.annotation.WebFilter;
  *
  * @author Aluno
  */
-@WebFilter(filterName = "NewFilter", urlPatterns = {"/*"})
+//@WebFilter(filterName = "NewFilter", urlPatterns = {"/*"})
 public class NewFilter implements Filter {
     
     private static final boolean debug = true;

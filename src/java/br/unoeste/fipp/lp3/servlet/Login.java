@@ -41,7 +41,8 @@ public class Login extends HttpServlet {
                 errosDoProcessamento.add("Senha não informada.");
             }
             if (errosDoProcessamento.isEmpty()) {
-                Funcionario funcionario = FuncionarioDAO.busca(login);
+                Funcionario funcionario;
+                funcionario = FuncionarioDAO.busca(login);
                 if (funcionario == null) {
                     errosDoProcessamento.add("Usuário não cadastrado.");
                 } else if (funcionario.getSenha().equals(senha)) {
