@@ -179,7 +179,7 @@ ALTER SEQUENCE funcionario_fun_codigo_seq OWNED BY funcionario.fun_codigo;
 CREATE TABLE solicitante (
     sol_email character varying(70) NOT NULL,
     sol_nome character varying(70) NOT NULL,
-    sol_telfone character varying(20) NOT NULL,
+    sol_telefone character varying(20) NOT NULL,
     sol_observacao character varying(255) NOT NULL
 );
 
@@ -243,6 +243,14 @@ SELECT pg_catalog.setval('"Classificacao_cla_codigo_seq"', 5, true);
 --
 
 SELECT pg_catalog.setval('"Status_sta_codigo_seq"', 1, false);
+
+--
+-- TOC entry 2207 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: funcionario_fun_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('funcionario_fun_codigo_seq', 2, true);
 
 --
 -- TOC entry 2062 (class 2606 OID 24757)

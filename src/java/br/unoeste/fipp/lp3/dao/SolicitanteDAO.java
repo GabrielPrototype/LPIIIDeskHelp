@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class SolicitanteDAO {
 
-    public static List<Solicitante> lista() {
+    public static List<Solicitante> lista() throws DAOException {
         List<Solicitante> temp = new ArrayList();
-        String sql = "select sol_email, sol_nome, sol_telfone,sol_observacao from solicitante ORDER BY sol_email;";
+        String sql = "select sol_email, sol_nome, sol_telefone, sol_observacao from solicitante ORDER BY sol_email;";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
@@ -39,12 +39,13 @@ public class SolicitanteDAO {
                 }
             }
         } catch (SQLException ex) {
+            throw new DAOException("Erro ao receber lista de registros");
         }
         return temp;
     }
 
     public static Solicitante busca(String nome) {
-        String sql = "select sol_email, sol_nome, sol_telfone,sol_observacao from solicitante where sol_nome = '" + nome + "';";
+        String sql = "select sol_email, sol_nome, sol_telefone,sol_observacao from solicitante where sol_nome = '" + nome + "';";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
@@ -64,7 +65,7 @@ public class SolicitanteDAO {
     }
 
     public static Solicitante buscaEmail(String email) {
-        String sql = "select sol_email, sol_nome, sol_telfone,sol_observacao from solicitante where sol_nome = '" + email + "';";
+        String sql = "select sol_email, sol_nome, sol_telefone,sol_observacao from solicitante where sol_nome = '" + email + "';";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (Statement st = conn.createStatement()) {
@@ -85,7 +86,7 @@ public class SolicitanteDAO {
 
     public static void insere(Solicitante sol)
             throws DAOException {
-        String sql = "insert into solicitante (sol_email, sol_nome,sol_telfone,sol_observacao) values (?,?,?,?);";
+        String sql = "insert into solicitante (sol_email, sol_nome,sol_telefone,sol_observacao) values (?,?,?,?);";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
@@ -103,7 +104,7 @@ public class SolicitanteDAO {
 
     public static void altera(Solicitante sol)
             throws DAOException {
-        String sql = "update solicitante set sol_nome = ?, sol_telfone = ?, sol_observacao = ? where sol_email = ?";
+        String sql = "update solicitante set sol_nome = ?, sol_telefone = ?, sol_observacao = ? where sol_email = ?";
         try (Connection conn = Conexao.abre()) {
             if (conn != null) {
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
