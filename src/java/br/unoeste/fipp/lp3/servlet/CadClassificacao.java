@@ -44,7 +44,7 @@ public class CadClassificacao extends HttpServlet {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
         if (request.getParameter("sel") != null) {
-            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+             if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
                 try {
                     Classificacao selecionado = ClassificacaoDAO.busca(Integer.parseInt(request.getParameter("sel")));
                     if (selecionado == null) {
@@ -58,7 +58,7 @@ public class CadClassificacao extends HttpServlet {
                 } catch (Exception ex) {
                     erros.add("Uso inválido.");
                 }
-            }
+             }
         }
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;

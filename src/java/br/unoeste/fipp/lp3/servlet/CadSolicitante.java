@@ -40,19 +40,19 @@ public class CadSolicitante extends HttpServlet {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
         if (request.getParameter("sel") != null) {
-            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
-                try {
-                    Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("sel"));
-                    if (selecionado == null) {
-                        erros.add("Não cadastrado.");
-                    } else {
-                        request.setAttribute("solicitante", selecionado);
-                        request.setAttribute("alterando", true);
-                    }
-                } catch (Exception ex) {
-                    erros.add("Uso inválido.");
+
+            try {
+                Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("sel"));
+                if (selecionado == null) {
+                    erros.add("Não cadastrado.");
+                } else {
+                    request.setAttribute("solicitante", selecionado);
+                    request.setAttribute("alterando", true);
                 }
+            } catch (Exception ex) {
+                erros.add("Uso inválido.");
             }
+
         }
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
@@ -98,13 +98,13 @@ public class CadSolicitante extends HttpServlet {
         }
 
         if (request.getParameter("del") != null) {
-            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
-                try {
-                    SolicitanteDAO.exclui(request.getParameter("del"));
-                } catch (DAOException ex) {
-                    Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+            try {
+                SolicitanteDAO.exclui(request.getParameter("del"));
+            } catch (DAOException ex) {
+                Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
         List<Solicitante> cadastrados;
         cadastrados = SolicitanteDAO.lista();
