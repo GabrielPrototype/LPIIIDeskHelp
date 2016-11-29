@@ -9,9 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="/LP3_2Bim_DeskHelp/css/layout.css" rel="stylesheet" type="text/css"/>
         <title>Autenticação de Usuário</title>
     </head>
-    <body>
+    <body id="home">
         <h1>Autenticação de Usuário</h1>
         <c:if test="${not empty requestScope.erros.mensagens}">
             <ul>
@@ -20,16 +21,21 @@
                     </c:forEach> 
             </ul>
         </c:if>
-        <form method="post" action="index.do">
-            Login: 
-            <input type="text" name="txtLogin" value="${param.txtLogin}" size="10"/>
-            <br/>
-            Senha: 
-            <input type="password" name="txtSenha" size="10"/>
-            <p>
-                <input type="submit" name="bEntrar" value="Entrar"/>
-                <input type="submit" name="bLimpa" value="Limpar"/>
-            </p>
-        </form>
+        <div class="rain">
+            <div class="border start">
+                <form method="post" action="index.do">
+                    <label>Login:</label> 
+                    <input type="text" name="txtLogin" value="${param.txtLogin}" size="11"/>
+                    <br/>
+                    <label>Senha:</label> 
+                    <input type="password" name="txtSenha" size="10"/>
+                    <p>
+                        <br/>
+                        <input type="submit" name="bEntrar" value="Entrar"/>
+                        <input type="submit" name="bLimpa" value="Limpar"/>
+                    </p>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
