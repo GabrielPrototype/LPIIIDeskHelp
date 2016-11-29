@@ -3,6 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="/LP3_2Bim_DeskHelp/css/layout.css" rel="stylesheet" type="text/css"/>
         <title>Menu</title>
     </head>
     <body>
@@ -10,9 +11,17 @@
         <ul>
             <li>
                 <a href="cad_status.do">Cadastro de Status</a>
+            </li>
+            <li>
                 <a href="cad_classificacao.do">Cadastro de Classificação</a>
+            </li>
+            <li>
                 <a href="cad_solicitante.do">Cadastro de Solicitante</a>
+            </li>
+            <li>
                 <a href="cad_funcionario.do">Cadastro de Funcionário</a>
+            </li>
+            <li>
                 <a href="cad_atividade.do">Cadastro de Atividade</a>
             </li>
             <li>
