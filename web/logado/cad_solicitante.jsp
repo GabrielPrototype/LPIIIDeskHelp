@@ -16,7 +16,7 @@
                     </c:forEach> 
             </ul>
         </c:if>
-        <div class="border start2">
+        <div class="border start4">
             <form method="post" action="cad_solicitante.do">
                 <label>E-Mail</label>
                 <input type="text" name="txtEmail" 
@@ -31,17 +31,19 @@
                 <label>Observação</label>
                 <input type="text" name="txtObservacao" 
                        value="${empty erros.mensagens ? solicitante.observacao : param.txtObservacao}" size="80" maxlength="40"/>
-
-                <p>
-                    <input type="submit" name="bInserir" value="Inserir"
-                           ${alterando ? "disabled=\"disable\"" : ""}/>
-                    <input type="submit" name="bAlterar" value="Alterar"
-                           ${alterando ? "" : "disabled=\"disable\""}/>
-                    <input type="submit" name="bLimpar" value="Limpar"/>
-                </p>
-
-            </form>
         </div>
+        <p>
+            <input type="submit" name="bInserir" value="Inserir"
+                   ${alterando ? "disabled=\"disable\"" : ""}/>
+            <input type="submit" name="bAlterar" value="Alterar"
+                   ${alterando ? "" : "disabled=\"disable\""}/>
+            <input type="submit" name="bLimpar" value="Limpar"/>
+        </p>
+
+    </form>
+    </br>
+    </br>
+    </br>
     <c:if test="${not empty cadastrados}">
         <h2>Usuários Cadastrados</h2>
         <table>

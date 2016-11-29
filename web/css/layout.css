@@ -51,6 +51,14 @@ body{
     height: 500px;
     width: 950px;
 }
+.border.start3{
+    height: 200px;
+    width: 950px;
+}
+.border.start4{
+    height: 350px;
+    width: 950px;
+}
 /* Non-keyframe fallback animation */
 .border.end,
 .rain.end{

@@ -45,7 +45,7 @@
                     </c:if>
                 </select>
 
-                <label>Ativo</label>
+                <label>Ativo?</label>
                 <input type="checkbox" name="chkAtivo" value="ativo"   
                        <c:if test="${empty erros.mensagens}">
                            ${classificacao.ativo ? " checked=\"checked\"" : " checked=\"\""}
@@ -53,10 +53,9 @@
                        <c:if test="${not empty erros.mensagens}">
                            ${param.chkAtiva ? " checked=\"checked\"" : " checked=\"\""}
                        </c:if>
-                       >  <label>Ativo?</label> 
+                       >
                 <br>
-
-
+                </div>
                 <p>
                     <input type="submit" name="bInserir" value="Inserir"
                            ${alterando ? "disabled=\"disable\"" : ""}/>
@@ -64,9 +63,7 @@
                            ${alterando ? "" : "disabled=\"disable\""}/>
                     <input type="submit" name="bLimpar" value="Limpar"/>
                 </p>
-
             </form>
-        </div>
         </br>
         </br>
         </br>
