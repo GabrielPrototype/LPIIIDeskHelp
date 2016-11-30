@@ -68,7 +68,11 @@ public class CadFuncionario extends HttpServlet {
 
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
-
+        boolean sair = request.getParameter("bSair") != null;
+        if (sair) {
+            RequestDispatcher rd = request.getRequestDispatcher("/logado/menu.jsp");
+            rd.forward(request, response);
+        }
         if (inserir || alterar) {
 
             Funcionario funcionario = new Funcionario();

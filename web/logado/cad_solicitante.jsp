@@ -33,11 +33,14 @@
                        value="${empty erros.mensagens ? solicitante.observacao : param.txtObservacao}" size="80" maxlength="40"/>
         </div>
         <p>
-            <input type="submit" name="bInserir" value="Inserir"
-                   ${alterando ? "disabled=\"disable\"" : ""}/>
+            <input type="submit" name="bLimpar" value="Limpar"/>
+            <input type="submit" name="bSair" value="Sair"/>
             <input type="submit" name="bAlterar" value="Alterar"
                    ${alterando ? "" : "disabled=\"disable\""}/>
-            <input type="submit" name="bLimpar" value="Limpar"/>
+            <input type="submit" name="bInserir" value="Inserir"
+                   ${alterando ? "disabled=\"disable\"" : ""}/>
+
+
         </p>
 
     </form>

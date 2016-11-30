@@ -60,6 +60,7 @@ public class CadStatus extends HttpServlet {
         }
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
+        boolean sair = request.getParameter("bSair") != null;
         if (inserir || alterar) {
 
             Status status = new Status();
@@ -98,7 +99,10 @@ public class CadStatus extends HttpServlet {
         if (!erros.isEmpty()) {
             request.setAttribute("alterando", alterar);
         }
-
+        if (sair) {
+            RequestDispatcher rd = request.getRequestDispatcher("/logado/menu.jsp");
+            rd.forward(request, response);
+        }
         if (request.getParameter("del") != null) {
             if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
                 try {

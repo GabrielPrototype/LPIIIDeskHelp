@@ -34,13 +34,16 @@
                        </c:if>
                        ><br>
                 </div>
-                    <p>
-                        <input type="submit" name="bInserir" value="Inserir"
-                               ${alterando ? "disabled=\"disable\"" : ""}/>
-                        <input type="submit" name="bAlterar" value="Alterar"
-                               ${alterando ? "" : "disabled=\"disable\""}/>
-                        <input type="submit" name="bLimpar" value="Limpar"/>
-                    </p>
+                <p>
+                    <input type="submit" name="bLimpar" value="Limpar"/>
+                    <input type="submit" name="bSair" value="Sair"/>
+                    <input type="submit" name="bAlterar" value="Alterar"
+                           ${alterando ? "" : "disabled=\"disable\""}/>
+                    <input type="submit" name="bInserir" value="Inserir"
+                           ${alterando ? "disabled=\"disable\"" : ""}/>
+
+
+                </p>
             </form>
             </br>
             </br>

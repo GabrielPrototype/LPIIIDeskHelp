@@ -57,46 +57,48 @@
                 <br>
                 </div>
                 <p>
-                    <input type="submit" name="bInserir" value="Inserir"
-                           ${alterando ? "disabled=\"disable\"" : ""}/>
+                    <input type="submit" name="bLimpar" value="Limpar"/>
+                    <input type="submit" name="bSair" value="Sair"/>
                     <input type="submit" name="bAlterar" value="Alterar"
                            ${alterando ? "" : "disabled=\"disable\""}/>
-                    <input type="submit" name="bLimpar" value="Limpar"/>
+                    <input type="submit" name="bInserir" value="Inserir"
+                           ${alterando ? "disabled=\"disable\"" : ""}/>
+
                 </p>
             </form>
-        </br>
-        </br>
-        </br>
+            </br>
+            </br>
+            </br>
 
-        <c:if test="${not empty cadastrados}">
-            <h2>Classificações Cadastradas</h2>
-            <table>
-                <tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Ativo</th>
-                    <th>Tipo</th>
-                    <th>Contratação</th>
-                    <th>Demissão</th>
-                    <th colspan="2">-</th>
-                </tr>
-                <c:forEach var="func" items="${cadastrados}">
+            <c:if test="${not empty cadastrados}">
+                <h2>Classificações Cadastradas</h2>
+                <table>
                     <tr>
-                        <td>${func.cod}</td>
-                        <td>${func.nome}</td>
-                        <td>${func.ativo}</td>
-                        <td>${func.tipo}</td>
-                        <td>${func.dtContratacaoString}</td>
-                        <td>${func.dtDemissaoString}</td>
-                        <td>
-                            <a href="cad_funcionario.do?sel=${func.cod}">Selecionar</a>
-                        </td>
-                        <td>
-                            <a href="cad_funcionario.do?del=${func.cod}">Excluir</a>
-                        </td>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Ativo</th>
+                        <th>Tipo</th>
+                        <th>Contratação</th>
+                        <th>Demissão</th>
+                        <th colspan="2">-</th>
                     </tr>
-                </c:forEach>
-            </table>
-        </c:if>
+                    <c:forEach var="func" items="${cadastrados}">
+                        <tr>
+                            <td>${func.cod}</td>
+                            <td>${func.nome}</td>
+                            <td>${func.ativo}</td>
+                            <td>${func.tipo}</td>
+                            <td>${func.dtContratacaoString}</td>
+                            <td>${func.dtDemissaoString}</td>
+                            <td>
+                                <a href="cad_funcionario.do?sel=${func.cod}">Selecionar</a>
+                            </td>
+                            <td>
+                                <a href="cad_funcionario.do?del=${func.cod}">Excluir</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:if>
     </body>
 </html>
