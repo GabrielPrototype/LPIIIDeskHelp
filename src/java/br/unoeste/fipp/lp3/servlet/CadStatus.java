@@ -6,6 +6,7 @@
 package br.unoeste.fipp.lp3.servlet;
 
 import br.unoeste.fipp.lp3.dao.StatusDAO;
+import br.unoeste.fipp.lp3.entities.Funcionario;
 import br.unoeste.fipp.lp3.entities.Status;
 import br.unoeste.fipp.lp3.persistencia.DAOException;
 import br.unoeste.fipp.lp3.util.Erro;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,18 +40,22 @@ public class CadStatus extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Erro erros = new Erro();
-
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
         if (request.getParameter("sel") != null) {
-            try {
-                Status selecionado = StatusDAO.busca(Integer.parseInt(request.getParameter("sel")));
-                if (selecionado == null) {
-                    erros.add("Não cadastrado.");
-                } else {
-                    request.setAttribute("status", selecionado);
-                    request.setAttribute("alterando", true);
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    Status selecionado = StatusDAO.busca(Integer.parseInt(request.getParameter("sel")));
+                    if (selecionado == null) {
+                        erros.add("Não cadastrado.");
+                    } else {
+                        request.setAttribute("status", selecionado);
+                        request.setAttribute("alterando", true);
+                    }
+                } catch (Exception ex) {
+                    erros.add("Uso inválido.");
                 }
-            } catch (Exception ex) {
-                erros.add("Uso inválido.");
             }
         }
         boolean inserir = request.getParameter("bInserir") != null;
@@ -94,14 +100,16 @@ public class CadStatus extends HttpServlet {
         }
 
         if (request.getParameter("del") != null) {
-            try {
-                StatusDAO.exclui(Integer.parseInt(
-                        request.getParameter("del")
-                ));
-            } catch (NumberFormatException ex) {
-                erros.add("Parâmetro inválido");
-            } catch (DAOException ex) {
-                erros.add(ex.getLocalizedMessage());
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    StatusDAO.exclui(Integer.parseInt(
+                            request.getParameter("del")
+                    ));
+                } catch (NumberFormatException ex) {
+                    erros.add("Parâmetro inválido");
+                } catch (DAOException ex) {
+                    erros.add(ex.getLocalizedMessage());
+                }
             }
         }
 

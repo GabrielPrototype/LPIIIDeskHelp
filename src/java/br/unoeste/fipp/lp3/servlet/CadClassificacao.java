@@ -7,6 +7,7 @@ package br.unoeste.fipp.lp3.servlet;
 
 import br.unoeste.fipp.lp3.dao.ClassificacaoDAO;
 import br.unoeste.fipp.lp3.entities.Classificacao;
+import br.unoeste.fipp.lp3.entities.Funcionario;
 import br.unoeste.fipp.lp3.persistencia.DAOException;
 import br.unoeste.fipp.lp3.util.Erro;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,25 +40,29 @@ public class CadClassificacao extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Erro erros = new Erro();
-
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
         if (request.getParameter("sel") != null) {
-            try {
-                Classificacao selecionado = ClassificacaoDAO.busca(Integer.parseInt(request.getParameter("sel")));
-                if (selecionado == null) {
-                    erros.add("Não cadastrado.");
-                } else {
-                    request.setAttribute("classificacao", selecionado);
-                    request.setAttribute("alterando", true);
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    Classificacao selecionado = ClassificacaoDAO.busca(Integer.parseInt(request.getParameter("sel")));
+                    if (selecionado == null) {
+                        erros.add("Não cadastrado.");
+                    } else {
+                        request.setAttribute("classificacao", selecionado);
+                        request.setAttribute("alterando", true);
+                    }
+                } catch (NumberFormatException ex) {
+                    erros.add("Ocorreu um erro na operação, tente novamente");
+                } catch (Exception ex) {
+                    erros.add("Uso inválido.");
                 }
-            } catch (NumberFormatException ex){
-                erros.add("Ocorreu um erro na operação, tente novamente");
-            } catch (Exception ex) {
-                erros.add("Uso inválido.");
-            } 
+            }
         }
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
-        
+
         if (inserir || alterar) {
 
             Classificacao classificacao = new Classificacao();
@@ -96,14 +102,17 @@ public class CadClassificacao extends HttpServlet {
         }
 
         if (request.getParameter("del") != null) {
-            try {
-                ClassificacaoDAO.exclui(Integer.parseInt(
-                        request.getParameter("del")
-                ));
-            } catch (DAOException ex) {
-                erros.add(ex.getLocalizedMessage());
-            } catch (NumberFormatException ex) {
-                erros.add("Parâmetro inválido");
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    ClassificacaoDAO.exclui(Integer.parseInt(
+                            request.getParameter("del")
+                    ));
+                } catch (DAOException ex) {
+                    erros.add(ex.getLocalizedMessage());
+                } catch (NumberFormatException ex) {
+                    erros.add("Parâmetro inválido");
+                }
+
             }
         }
 

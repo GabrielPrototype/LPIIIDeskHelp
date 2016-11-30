@@ -1,6 +1,7 @@
 package br.unoeste.fipp.lp3.servlet;
 
 import br.unoeste.fipp.lp3.dao.SolicitanteDAO;
+import br.unoeste.fipp.lp3.entities.Funcionario;
 import br.unoeste.fipp.lp3.entities.Solicitante;
 import br.unoeste.fipp.lp3.persistencia.DAOException;
 import br.unoeste.fipp.lp3.util.Erro;
@@ -14,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,20 +34,24 @@ public class CadSolicitante extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, DAOException {
         Erro erros = new Erro();
-
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
         if (request.getParameter("sel") != null) {
-            try {
-                Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("sel"));
-                if (selecionado == null) {
-                    erros.add("Não cadastrado.");
-                } else {
-                    request.setAttribute("solicitante", selecionado);
-                    request.setAttribute("alterando", true);
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    Solicitante selecionado = SolicitanteDAO.busca(request.getParameter("sel"));
+                    if (selecionado == null) {
+                        erros.add("Não cadastrado.");
+                    } else {
+                        request.setAttribute("solicitante", selecionado);
+                        request.setAttribute("alterando", true);
+                    }
+                } catch (Exception ex) {
+                    erros.add("Uso inválido.");
                 }
-            } catch (Exception ex) {
-                erros.add("Uso inválido.");
             }
         }
         boolean inserir = request.getParameter("bInserir") != null;
@@ -87,13 +93,16 @@ public class CadSolicitante extends HttpServlet {
         }
 
         if (request.getParameter("del") != null) {
-            try {
-                SolicitanteDAO.exclui(request.getParameter("del"));
-            } catch (DAOException ex) {
-                Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    SolicitanteDAO.exclui(request.getParameter("del"));
+                } catch (DAOException ex) {
+                    Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        List<Solicitante> cadastrados = SolicitanteDAO.lista();
+        List<Solicitante> cadastrados;
+        cadastrados = SolicitanteDAO.lista();
         request.setAttribute("erros", erros);
         request.setAttribute("cadastrados", cadastrados);
         RequestDispatcher rd = request.getRequestDispatcher("/logado/cad_solicitante.jsp");
@@ -112,7 +121,11 @@ public class CadSolicitante extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (DAOException ex) {
+            Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -126,7 +139,11 @@ public class CadSolicitante extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (DAOException ex) {
+            Logger.getLogger(CadSolicitante.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

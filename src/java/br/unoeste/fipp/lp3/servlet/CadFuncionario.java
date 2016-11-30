@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,33 +43,37 @@ public class CadFuncionario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Erro erros = new Erro();
-        
+
         String emailexpression = "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
         Pattern emailpattern = Pattern.compile(emailexpression);
         Matcher emailmatcher;
-        
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
         if (request.getParameter("sel") != null) {
-            try {
-                Funcionario selecionado = FuncionarioDAO.busca(Integer.parseInt(request.getParameter("sel")));
-                if (selecionado == null) {
-                    erros.add("Não cadastrado.");
-                } else {
-                    request.setAttribute("funcionario", selecionado);
-                    request.setAttribute("alterando", true);
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    Funcionario selecionado = FuncionarioDAO.busca(Integer.parseInt(request.getParameter("sel")));
+                    if (selecionado == null) {
+                        erros.add("Não cadastrado.");
+                    } else {
+                        request.setAttribute("funcionario", selecionado);
+                        request.setAttribute("alterando", true);
+                    }
+                } catch (Exception ex) {
+                    erros.add("Uso inválido.");
                 }
-            } catch (Exception ex) {
-                erros.add("Uso inválido.");
             }
         }
-        
+
         boolean inserir = request.getParameter("bInserir") != null;
         boolean alterar = request.getParameter("bAlterar") != null;
-        
+
         if (inserir || alterar) {
-            
+
             Funcionario funcionario = new Funcionario();
             String dtContratacao, dtDemissao, tipo;
-            
+
             if (alterar) {
                 try {
                     funcionario.setCod(Integer.parseInt(request.getParameter("txtCodigo")));
@@ -77,22 +82,22 @@ public class CadFuncionario extends HttpServlet {
                     erros.add("Código não informado corretamente.");
                 }
             }
-            
+
             funcionario.setNome(request.getParameter("txtNome"));
             funcionario.setAtivo(request.getParameter("chkAtivo") != null && !"".equals(request.getParameter("chkAtivo")));
             funcionario.setSenha(request.getParameter("txtSenha"));
             tipo = request.getParameter("selAdmin");
             dtContratacao = request.getParameter("txtDtContratacao");
             dtDemissao = request.getParameter("txtDtDemissao");
-            
+
             if (funcionario.getNome() == null || funcionario.getNome().isEmpty()) {
                 erros.add("Nome não informado.");
             }
-            
+
             if (funcionario.getSenha() == null || funcionario.getSenha().isEmpty()) {
                 erros.add("Senha não informada.");
             }
-            
+
             if (dtContratacao == null || dtContratacao.isEmpty()) {
                 erros.add("Data de Contratação não informada.");
             } else {
@@ -101,7 +106,7 @@ public class CadFuncionario extends HttpServlet {
                     erros.add("Data de Contratação não corresponde ao formato DD/MM/AAA");
                 }
             }
-            
+
             if (dtDemissao == null || dtContratacao.isEmpty()) {
                 erros.add("Data de Contratação não informada.");
             } else {
@@ -110,7 +115,7 @@ public class CadFuncionario extends HttpServlet {
                     erros.add("Data de Contratação não corresponde ao formato DD/MM/AAA");
                 }
             }
-            
+
             if (tipo == null || tipo.isEmpty()) {
                 erros.add("Tipo invalido");
             } else {
@@ -129,7 +134,7 @@ public class CadFuncionario extends HttpServlet {
                     funcionario.setDtContratacao(cal.getTime());
                 } catch (Exception e) {
                 }
-                
+
                 try {
                     auxdata = dtDemissao.split("\\/|-|\\.");
                     cal.set(Calendar.YEAR, Integer.parseInt(auxdata[2]));
@@ -138,7 +143,7 @@ public class CadFuncionario extends HttpServlet {
                     funcionario.setDtDemissao(cal.getTime());
                 } catch (Exception e) {
                 }
-                
+
                 try {
                     if (inserir) {
                         FuncionarioDAO.insere(funcionario);
@@ -149,24 +154,26 @@ public class CadFuncionario extends HttpServlet {
                     erros.add(ex.getLocalizedMessage());
                 }
             }
-            
+
         }
         if (!erros.isEmpty()) {
             request.setAttribute("alterando", alterar);
         }
-        
+
         if (request.getParameter("del") != null) {
-            try {
-                FuncionarioDAO.exclui(Integer.parseInt(
-                        request.getParameter("del")
-                ));
-            } catch (DAOException ex) {
-                erros.add(ex.getLocalizedMessage());
-            } catch (NumberFormatException ex) {
-                erros.add("Parâmetro inválido");
+            if (((Funcionario) session.getAttribute("usuarioLogado")).getTipo() == 'a') {
+                try {
+                    FuncionarioDAO.exclui(Integer.parseInt(
+                            request.getParameter("del")
+                    ));
+                } catch (DAOException ex) {
+                    erros.add(ex.getLocalizedMessage());
+                } catch (NumberFormatException ex) {
+                    erros.add("Parâmetro inválido");
+                }
             }
         }
-        
+
         List<Funcionario> cadastrados = FuncionarioDAO.lista();
         request.setAttribute("erros", erros);
         request.setAttribute("cadastrados", cadastrados);

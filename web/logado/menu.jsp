@@ -26,7 +26,7 @@
                     <a href="cad_atividade.do">Cadastro de Atividade</a>
                 </li>
                 <li>
-                    <a href="/cadastro/logout.jsp">Sair</a>
+                    <a href="logout.jsp">Sair</a>
                 </li>
             </ul>
         </div>
